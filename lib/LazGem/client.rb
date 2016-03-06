@@ -3,6 +3,7 @@
 # Function:
 #   Lazurite Pi Gateway SubGHz library
 
+
 class LAZURITE_ERROR < StandardError; end
 class LazGem::Client
 	##

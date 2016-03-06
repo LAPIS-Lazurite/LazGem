@@ -1,5 +1,5 @@
-require "LazGem/version"
-require "LazGem/client"
+module LazGem; end
 
-module LazGem
-end
+require_relative "LazGem/version"
+require_relative "LazGem/client"
+

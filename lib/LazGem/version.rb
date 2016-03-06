@@ -1,3 +1,5 @@
 module LazGem
-  VERSION = "0.1.0"
+  class Client
+    VERSION = "2.4.0"
+  end
 end
