@@ -27,7 +27,7 @@ class LazGem::Device
 #	mode:	must be 2
 # return
 #	none
-	def device_open(ch=36, panid=0xabcd, pwr=20, rate=100, mode=2, callback=nil)
+	def device_open(ch=36, panid=0xabcd, pwr=20, rate=100, mode=2)
 		if(ch < 24) || (ch > 61) then
 			puts "ch is invalid. it must be 24-61"
 			raise LAZURITE_ERROR
@@ -43,7 +43,7 @@ class LazGem::Device
 			raise LAZURITE_ERROR
 			return
 		end
-		cmd = "sudo insmod /home/pi/driver/sub-ghz/DRV_802154.ko ch=" +ch.to_s+" panid=0x"+panid.to_s(16)+ " pwr="+pwr.to_s+" rate="+rate.to_s + " mode="+mode.to_s(16)
+		cmd = "sudo insmod /home/pi/driver/LazDriver/DRV_802154.ko ch=" +ch.to_s+" panid=0x"+panid.to_s(16)+ " pwr="+pwr.to_s+" rate="+rate.to_s + " mode="+mode.to_s(16)
 		result = system(cmd)
 		bp3596_dev = "/dev/bp3596"
 		sleep(0.1)

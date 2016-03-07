@@ -7,10 +7,6 @@ require 'LazGem'
 
 laz = LazGem::Device.new
 
-#laz.open(ch=10)
-#laz.open()
-##laz.open(ch=24)
-
 finish_flag=0
 Signal.trap(:INT){
 	finish_flag=1
