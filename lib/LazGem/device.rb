@@ -5,7 +5,7 @@
 
 
 class LAZURITE_ERROR < StandardError; end
-class LazGem::Client
+class LazGem::Device
 	##
 	# func   : Read the data from the receiving pipe
 	# input  : Receive pipe fp
