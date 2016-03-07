@@ -6,12 +6,12 @@ require 'LazGem/version'
 Gem::Specification.new do |spec|
   spec.name          = "LazGem"
   spec.version       = LazGem::VERSION
-  spec.authors       = ["NaotakaSaito"]
-  spec.email         = ["saitou088@dsn.lapis-semi.com"]
+  spec.authors       = ["NaotakaSaito","Eiichi Saito"]
+  spec.email         = ["saitou088@dsn.lapis-semi.com","saito253@dsn.lapis-semi.com"]
 
   spec.summary       = %q{Lazurite ruby gem}
   spec.description   = %q{low power IoT device }
-  spec.homepage      = "https://github.com/NaotakaSaito/LazGem"
+  spec.homepage      = "https://github.com/LAPIS-Lazurite/LazGem"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
