@@ -218,7 +218,8 @@ class LazGem::Device
 		#payload
 		payload =packet["payload"]
 		if payload.length > 235 then
-			raise PAYLOAD_SIZE_OVER
+			puts "Payload size over. maximum length is less than 235"
+			raise LAZURITE_ERROR
 			return
 		end
 
@@ -228,7 +229,8 @@ class LazGem::Device
 		begin
 			len = @@device_wr.write(raw)
 		rescue
-			raise EACK
+			puts "Doesn't receive ACK"
+			raise LAZURITE_ERROR
 		end
 		return len
 	end
