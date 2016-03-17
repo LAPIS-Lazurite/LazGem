@@ -157,7 +157,7 @@ class LazGem::Device
 		end
 
 		rssi =			raw[48].unpack("C*")[0]
-		payload =		raw[49..size-2]
+		payload =		raw[49..size-1]
 		
 		out = Hash["Command" => command,
 					"Time" => t,

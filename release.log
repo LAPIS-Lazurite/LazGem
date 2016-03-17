@@ -1,0 +1,4 @@
+2016.3.15	first release
+2016.3.17 update
+	受信データの最後の1バイトが欠けている不具合を修正しました
+	Bug fix. last 1 byte of receiving data is lack
