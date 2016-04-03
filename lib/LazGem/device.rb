@@ -195,11 +195,43 @@ class LazGem::Device
 #		KeyError			: if hash data does not include rxAddr, this error is raisen.
 #		PAYLOAD_SIZE_OVER	: payload length is over
 	def write(packet)
+		#command
+		cmd = 0x0201
+		#sec (does not use)
+		sec = 0
+		#nano sec (does not use)
+		nsec = 0
+		# Area code (only jp)
 		begin
-			rxAddrType =packet.fetch("header")
+			area =packet.fetch("area")
+		rescue KeyError
+			area = "jp"
+		end
+		# channel
+		begin
+			ch = packet.fetch("ch")
+		rescue KeyError
+			ch = 36
+		end
+		# rate
+		begin
+			rate = packet.fetch("rate")
+		rescue KeyError
+			rate = 100
+		end
+		# power
+		begin
+			pwr = packet.fetch("pwr")
+		rescue KeyError
+			pwr = 20
+		end
+		# mac header
+		begin
+			header =packet.fetch("header")
 		rescue KeyError
 			header =0xa821
 		end
+		# sequence number
 		seq = 0
 
 		# panid
@@ -208,10 +240,21 @@ class LazGem::Device
 		rescue KeyError
 			rxPanid = 0xABCD
 		end
-
+		# rxAddrType
+		begin
+			rxAddrType =packet.fetch("rxAddrType")
+		rescue KeyError
+			rxAddrType = 2
+		end
 		# rxAddr
 		rxAddr =packet.fetch("rxAddr")
-
+		
+		# txAddrType
+		begin
+			txAddrType =packet.fetch("txAddrType")
+		rescue KeyError
+			txAddrType = 2
+		end
 		# txAddr
 		txAddr = 0
 
