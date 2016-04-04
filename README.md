@@ -22,12 +22,16 @@ Or install it yourself as:
 
 ## Usage
 
-please try to execute sample program
+###please try to execute sample program
 tx:	sample\sample_tx.rb
+
 rx:	sample\sample_rx.rb
 
-document(Japanese only):
+
+###document(Japanese only):
+
   http://www.lapis-semi.com/lazurite-jp/contents/gateway/ruby/LazGem.html
+
 
 ## Development
 

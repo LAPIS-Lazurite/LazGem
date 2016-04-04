@@ -3,7 +3,12 @@
 # Function:
 #   Lazurite Pi Gateway SubGHz library
 
-
+#################################################################
+######
+######	Do not forget to change path of libraries
+######			require and insmod
+######
+################################################################
 class LAZURITE_ERROR < StandardError; end
 class LazGem::Device
 	##
@@ -43,7 +48,7 @@ class LazGem::Device
 			raise LAZURITE_ERROR
 			return
 		end
-		cmd = "sudo insmod /home/pi/driver/LazDriver/DRV_802154.ko ch=" +ch.to_s+" panid=0x"+panid.to_s(16)+ " pwr="+pwr.to_s+" rate="+rate.to_s + " mode="+mode.to_s(16)
+		cmd = "sudo insmod /home/pi/develop/LazDriver/DRV_802154.ko ch=" +ch.to_s+" panid=0x"+panid.to_s(16)+ " pwr="+pwr.to_s+" rate="+rate.to_s + " mode="+mode.to_s(16)
 		result = system(cmd)
 		bp3596_dev = "/dev/bp3596"
 		sleep(0.1)
@@ -136,12 +141,11 @@ class LazGem::Device
 		rxAddrType =	raw[26].unpack("C*")[0]
 		if rxAddrType == 0 then
 			rxAddr = -1
-		elsif rxAddrType == 1 then
-			rxAddr = raw[34].unpack("n*")[0]
-		elsif rxAddrType == 2 then
-			rxAddr =		raw[33..34].unpack("n*")[0]
-		elsif rxAddrType == 3 then
-			rxAddr =		raw[27..34].unpack("a8*")[0]
+		else 
+			rxAddr = 0
+			for i in 27..34 do
+				rxAddr = rxAddr * 256 + raw[i].unpack("C*")[0]
+			end
 		end
 		txPanid =		raw[35..38].unpack("L*")[0]
 		txAddrType =	raw[39].unpack("C*")[0]
@@ -195,43 +199,62 @@ class LazGem::Device
 #		KeyError			: if hash data does not include rxAddr, this error is raisen.
 #		PAYLOAD_SIZE_OVER	: payload length is over
 	def write(packet)
+
 		#command
-		cmd = 0x0201
-		#sec (does not use)
-		sec = 0
-		#nano sec (does not use)
-		nsec = 0
-		# Area code (only jp)
 		begin
-			area =packet.fetch("area")
+			command =packet.fetch("Command")
+		rescue KeyError
+			command =0x0201
+		end
+
+		#Time
+		time = 0
+		usec = 0
+
+		#area
+		begin
+			area =packet.fetch("Area")
 		rescue KeyError
 			area = "jp"
 		end
-		# channel
+
+		#ch
 		begin
-			ch = packet.fetch("ch")
+			ch =packet.fetch("ch")
+			if(ch < 24) and (ch > 61) then
+				ch = 36
+			end
 		rescue KeyError
 			ch = 36
 		end
-		# rate
+
+		#rate
 		begin
-			rate = packet.fetch("rate")
+			rate =packet.fetch("rate")
+			if(rate != 50) then
+				rate = 100
+			end
 		rescue KeyError
 			rate = 100
 		end
-		# power
+
+		#pwr
 		begin
-			pwr = packet.fetch("pwr")
+			pwr =packet.fetch("pwr")
+			if(pwr != 1) then
+				pwr = 20
+			end
 		rescue KeyError
 			pwr = 20
 		end
-		# mac header
+
+		#header
 		begin
 			header =packet.fetch("header")
 		rescue KeyError
 			header =0xa821
 		end
-		# sequence number
+
 		seq = 0
 
 		# panid
@@ -255,8 +278,12 @@ class LazGem::Device
 		rescue KeyError
 			txAddrType = 2
 		end
+
 		# txAddr
 		txAddr = 0
+
+		# rssi
+		rssi = 0
 
 		#payload
 		payload =packet["payload"]
@@ -266,7 +293,7 @@ class LazGem::Device
 			return
 		end
 
-		raw = [header,seq,rxPanid,rxAddr,txAddr,payload].pack("scsssa*")
+		raw = [command,time,usec,ch,rate,pwr,header,seq,rxPanid,rxAddr,txAddr,rssi,payload].pack("scsssa*")
 
 		ret = select(nil, [@@device_wr], nil, 0.1)
 		begin
@@ -285,3 +312,4 @@ class LazGem::Device
 		print("\n")
 	end
 end
+
