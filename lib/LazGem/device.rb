@@ -152,12 +152,11 @@ class LazGem::Device
 
 		if txAddrType == 0 then
 			txAddr = -1
-		elsif txAddrType == 1 then
-			txAddr = raw[47].unpack("n*")[0]
-		elsif txAddrType == 2 then
-			txAddr =		raw[46..47].unpack("n*")[0]
-		elsif txAddrType == 3 then
-			txAddr =		raw[40..47].unpack("a8*")[0]
+		else
+			txAddr = 0
+			for i in 40..47 do
+				txAddr = txAddr * 256 + raw[i].unpack("C*")[0]
+			end
 		end
 
 		rssi =			raw[48].unpack("C*")[0]
@@ -254,10 +253,7 @@ class LazGem::Device
 		rescue KeyError
 			header =0xa821
 		end
-
-		seq = 0
-
-		# panid
+		# rxPanid
 		begin
 			rxPanid =packet.fetch("rxPanid")
 		rescue KeyError
@@ -270,17 +266,38 @@ class LazGem::Device
 			rxAddrType = 2
 		end
 		# rxAddr
-		rxAddr =packet.fetch("rxAddr")
-		
+		tmp =packet.fetch("rxAddr")
+		rxAddr = 0
+		for i in 0..7 do
+			rxAddr = rxAddr*256 + tmp & 0xff
+			tmp = tmp >> 8
+		end
+		# txPanid
+		begin
+			txPanid =packet.fetch("txPanid")
+		rescue KeyError
+			txPanid = 0xABCD
+		end
 		# txAddrType
 		begin
 			txAddrType =packet.fetch("txAddrType")
 		rescue KeyError
 			txAddrType = 2
 		end
+		p "hello"
 
 		# txAddr
-		txAddr = 0
+		begin
+			tmp =packet.fetch("txAddr")
+			txAddr = 0
+			for i in 0..7 do
+				txAddr = txAddr*256 + tmp & 0xff
+				tmp = tmp >> 8
+			end
+		rescue KeyError
+			txAddr = -1
+		end
+
 
 		# rssi
 		rssi = 0
@@ -293,7 +310,8 @@ class LazGem::Device
 			return
 		end
 
-		raw = [command,time,usec,ch,rate,pwr,header,seq,rxPanid,rxAddr,txAddr,rssi,payload].pack("scsssa*")
+		raw = [command,time,usec,area,ch,rate,pwr,header,rxPanid,rxAddrType,rxAddr,txPanid,txAddrType,txAddr,rssi,payload].pack("SLLa2SSSLLCQLSQCa*")
+		p raw
 
 		ret = select(nil, [@@device_wr], nil, 0.1)
 		begin
