@@ -276,7 +276,7 @@ class LazGem::Device
 		begin
 			txPanid =packet.fetch("txPanid")
 		rescue KeyError
-			txPanid = 0xABCD
+			txPanid = -1
 		end
 		# txAddrType
 		begin
@@ -309,8 +309,8 @@ class LazGem::Device
 			raise LAZURITE_ERROR
 			return
 		end
-
-		raw = [command,time,usec,area,ch,rate,pwr,header,rxPanid,rxAddrType,rxAddr,txPanid,txAddrType,txAddr,rssi,payload].pack("SLLa2SSSLLCQLSQCa*")
+		p rate
+		raw = [command,time,usec,area,ch,rate,pwr,header,rxPanid,rxAddrType,rxAddr,txPanid,txAddrType,txAddr,rssi,payload].pack("SLLa2SSSLLCQLCQCa*")
 		p raw
 
 		ret = select(nil, [@@device_wr], nil, 0.1)
