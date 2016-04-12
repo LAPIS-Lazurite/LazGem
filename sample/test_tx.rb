@@ -12,11 +12,17 @@ Signal.trap(:INT){
 	finish_flag=1
 }
 
-laz.device_open()
+#laz.device_open()
+#device open in test mode of MODE_STREAM
+laz.device_open(mode:0x0202)
+#laz.device_open()
+
 
 #while finish_flag == 0 do
 	tx = Hash["rxAddr" => 0x902b]
 	tx["payload"] = "Welcome SubGHz\n"
+	#tx["ack_req"] = 0
+	#tx["seq_comp"] = 1
 	begin
 		laz.write(tx)
 	rescue LAZURITE_ERROR
