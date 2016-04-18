@@ -30,6 +30,9 @@ class LazGem::Device
 		result = write_driver(packet)
 		packet = read()
 		begin
+			while(packet.fetch("command") != 0x0400) do
+				packet = read()
+			end
 			ch = packet.fetch("ch")
 		rescue
 			msg = sprintf("fail to get ch number...")

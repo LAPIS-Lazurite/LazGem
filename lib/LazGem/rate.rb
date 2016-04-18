@@ -30,6 +30,9 @@ class LazGem::Device
 		result = write_driver(packet)
 		packet = read()
 		begin
+			while(packet.fetch("command") != 0x0404) do
+				packet = read()
+			end
 			rate = packet.fetch("rate")
 		rescue
 			msg = sprintf("fail to get rate number...")

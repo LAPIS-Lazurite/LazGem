@@ -17,6 +17,9 @@ class LazGem::Device
 		result = write_driver(packet)
 		packet = read()
 		begin
+			while(packet.fetch("command") != 0x0408) do
+				packet = read()
+			end
 			pwr = packet.fetch("pwr")
 		rescue
 			msg = sprintf("fail to get pwr number...")

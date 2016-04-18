@@ -17,6 +17,9 @@ class LazGem::Device
 		result = write_driver(packet)
 		packet = read()
 		begin
+			while(packet.fetch("command") != 0x0416) do
+				packet = read()
+			end
 			cca_retry = packet.fetch("rssi")
 		rescue
 			msg = sprintf("fail to get cca_retry...")

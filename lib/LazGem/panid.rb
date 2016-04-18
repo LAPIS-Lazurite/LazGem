@@ -17,6 +17,9 @@ class LazGem::Device
 		result = write_driver(packet)
 		packet = read()
 		begin
+			while(packet.fetch("command") != 0x0410) do
+				packet = read()
+			end
 			panid = packet.fetch("rxPanid")
 		rescue
 			msg = sprintf("fail to get panid...")

@@ -17,6 +17,9 @@ class LazGem::Device
 		result = write_driver(packet)
 		packet = read()
 		begin
+			while(packet.fetch("command") != 0x0414) do
+				packet = read()
+			end
 			edval = packet.fetch("rssi")
 		rescue
 			msg = sprintf("fail to get edval...")
