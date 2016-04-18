@@ -18,17 +18,12 @@ laz.device_open(mode:0x0202)
 #laz.device_open()
 
 
-#while finish_flag == 0 do
-	tx = Hash["rxAddr" => 0x902b]
-	tx["payload"] = "Welcome SubGHz\n"
-	#tx["rxAddrType"] = 5
-	#tx["seq_comp"] = 1
-	begin
-		laz.write(tx)
-	rescue => e
-		p e
-	end
-#end
+begin
+	edval = laz.get_edval()
+	p edval
+rescue => e
+	p e
+end
 
 laz.device_close()
 

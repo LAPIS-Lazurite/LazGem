@@ -18,17 +18,27 @@ laz.device_open(mode:0x0202)
 #laz.device_open()
 
 
-#while finish_flag == 0 do
-	tx = Hash["rxAddr" => 0x902b]
-	tx["payload"] = "Welcome SubGHz\n"
-	#tx["rxAddrType"] = 5
-	#tx["seq_comp"] = 1
-	begin
-		laz.write(tx)
-	rescue => e
-		p e
-	end
-#end
+print ("set invalid rat number\n")
+begin
+	laz.set_rate(3)
+rescue => e
+	p e
+end
+
+print ("set rate\n")
+begin
+	laz.set_rate(50)
+rescue => e
+	p e
+end
+
+print ("get rate \n")
+begin
+	rate = laz.get_rate()
+	p rate
+rescue => e
+	p e
+end
 
 laz.device_close()
 

@@ -18,17 +18,27 @@ laz.device_open(mode:0x0202)
 #laz.device_open()
 
 
-#while finish_flag == 0 do
-	tx = Hash["rxAddr" => 0x902b]
-	tx["payload"] = "Welcome SubGHz\n"
-	#tx["rxAddrType"] = 5
-	#tx["seq_comp"] = 1
-	begin
-		laz.write(tx)
-	rescue => e
-		p e
-	end
-#end
+print ("set invalid retry\n")
+begin
+	laz.set_retry(0x10000)
+rescue => e
+	p e
+end
+
+print ("set retry\n")
+begin
+	laz.set_retry(0xa5)
+rescue => e
+	p e
+end
+
+print ("get retry \n")
+begin
+	txretry = laz.get_retry()
+	p txretry
+rescue => e
+	p e
+end
 
 laz.device_close()
 

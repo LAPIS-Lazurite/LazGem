@@ -18,17 +18,27 @@ laz.device_open(mode:0x0202)
 #laz.device_open()
 
 
-#while finish_flag == 0 do
-	tx = Hash["rxAddr" => 0x902b]
-	tx["payload"] = "Welcome SubGHz\n"
-	#tx["rxAddrType"] = 5
-	#tx["seq_comp"] = 1
-	begin
-		laz.write(tx)
-	rescue => e
-		p e
-	end
-#end
+print ("set invalid cca cycle\n")
+begin
+	laz.set_cca_cycle(0x10000)
+rescue => e
+	p e
+end
+
+print ("set cca_cycle\n")
+begin
+	laz.set_cca_cycle(0x55)
+rescue => e
+	p e
+end
+
+print ("get cca_cycle \n")
+begin
+	cca_cycle = laz.get_cca_cycle()
+	p cca_cycle
+rescue => e
+	p e
+end
 
 laz.device_close()
 
