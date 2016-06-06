@@ -59,9 +59,9 @@ print(sprintf("%02x\n",laz.eeprom_read(0x25)))
 print(sprintf("%02x\n",laz.eeprom_read(0x26)))
 print(sprintf("%02x\n",laz.eeprom_read(0x27)))
 
-laz.tx_led(1)
+laz.tx_led(300)
 sleep 1
-laz.rx_led(1)
+laz.rx_led(300)
 
 # finishing process
 laz.device_close()
