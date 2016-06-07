@@ -25,25 +25,21 @@ Signal.trap(:INT){
 laz.device_open()
 
 # main routine
-p laz.get_ch()
+print(sprintf("default ch=%d\n",laz.get_ch()))
 laz.set_ch(32)
-p laz.get_ch()
+print(sprintf("ch is changed to 32. then %d\n",laz.get_ch()))
 
-sleep 0.1
-
-p laz.get_pwr()
+print(sprintf("default pwr=%d\n",laz.get_pwr()))
 laz.set_pwr(1)
-p laz.get_pwr()
+print(sprintf("pwr is changed to 1. then %d\n",laz.get_pwr()))
 
-sleep 0.1
-
-p laz.get_bps()
+print(sprintf("default bps=%d\n",laz.get_bps()))
 laz.set_bps(50)
-p laz.get_bps()
+print(sprintf("bps is changed to 50. then %d\n",laz.get_bps()))
 
-print(sprintf("%02x\n",laz.get_panid()))
-laz.set_panid(0xffff)
-print(sprintf("%02x\n",laz.get_panid()))
+print(sprintf("%02x\n",laz.get_my_panid()))
+laz.set_my_panid(0xffff)
+print(sprintf("%02x\n",laz.get_my_panid()))
 
 print(sprintf("%02x\n",laz.rf_reg_read(2)))
 print(sprintf("%02x\n",laz.rf_reg_read(3)))
@@ -59,9 +55,8 @@ print(sprintf("%02x\n",laz.eeprom_read(0x25)))
 print(sprintf("%02x\n",laz.eeprom_read(0x26)))
 print(sprintf("%02x\n",laz.eeprom_read(0x27)))
 
-laz.tx_led(300)
-sleep 1
-laz.rx_led(300)
+laz.tx_led(1)
+laz.rx_led(1)
 
 # finishing process
 laz.device_close()

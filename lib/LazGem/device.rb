@@ -30,7 +30,7 @@ class LazGem::Device
 		sleep(0.1)
 		@@device_rd = open(lzgw_dev,"rb")
 		@@device_wr = open(lzgw_dev,"wb")
-		result = system("tail -n -2 /var/log/messages")
+		result = system("tail -n -4 /var/log/messages")
 		print("\n")
 #		p result
 		print("Success to load SubGHz module\n")
