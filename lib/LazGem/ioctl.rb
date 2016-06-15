@@ -5,6 +5,10 @@
 #   Lazurite Pi Gateway SubGHz library
 
 class LazGem::Device
+	IOCTL_CMD=			0x0000
+	IOCTL_SET_BEGIN=	IOCTL_CMD+0x11
+	IOCTL_SET_RXON=		IOCTL_CMD+0x13
+	IOCTL_SET_RXOFF=	IOCTL_CMD+0x15
 	IOCTL_PARAM=		0x1000
 	IOCTL_GET_CH=		IOCTL_PARAM+0x02
 	IOCTL_SET_CH=		IOCTL_PARAM+0x03
@@ -224,6 +228,28 @@ class LazGem::Device
 			ret = @@device_wr.ioctl(IOCTL_TX_LED,time)
 			return ret
 		end
+	end
+	def set_begin()
+		data = 0;
+		ret = @@device_wr.ioctl(IOCTL_SET_BEGIN,data)
+		return ret
+	end
+	def begin(ch,panid,bps,pwr)
+		set_ch(ch)
+		set_my_panid(panid)
+		set_bps(bps)
+		set_pwr(pwr)
+		return set_begin()
+	end
+	def rxDisable()
+		rxon = 0;
+		ret = @@device_wr.ioctl(IOCTL_SET_RXOFF,rxon)
+		return ret
+	end
+	def rxEnable()
+		rxon = 1
+		ret = @@device_wr.ioctl(IOCTL_SET_RXON,rxon)
+		return ret
 	end
 end
 

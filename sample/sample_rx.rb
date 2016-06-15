@@ -23,6 +23,8 @@ Signal.trap(:INT){
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
 laz.device_open()
+laz.begin(36,0xABCD,100,20)
+laz.rxEnable()
 
 # printing header of receiving log
 print(sprintf("time\t\t\t\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
@@ -35,14 +37,7 @@ while finish_flag == 0 do
 		next
 	end
 	# printing data
-	print(sprintf("%s.%06d\t0x%04X\t0x%04X\t0x%04X\t%03d\t%s",
-		rcv["Time"].strftime("%Y-%m-%d %H:%M:%S"),
-		rcv["usec"],
-		rcv["rxPanid"],
-		rcv["rxAddr"],
-		rcv["txAddr"],
-		rcv["rssi"],
-		rcv["payload"].unpack("a*")[0]))
+	p rcv
 end
 
 # finishing process

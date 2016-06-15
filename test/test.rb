@@ -142,7 +142,7 @@ class TestClass < Minitest::Test
 	def test_reg
 		@@laz.device_open()
 		for i in 1..10000 do
-			assert_equal 0x9f,@@laz.rf_reg_read(2)
+			assert_equal 0x2f,@@laz.rf_reg_read(2)
 			assert_equal 0x04,@@laz.rf_reg_read(3)
 		end
 		@@laz.device_close()
