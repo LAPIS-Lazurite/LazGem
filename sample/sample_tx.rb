@@ -22,8 +22,8 @@ Signal.trap(:INT){
 #  rate:	bit rate  50 or 100
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
-laz.device_open()
-laz.begin(36,0xABCD,100,20)
+laz.init()
+print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
 
 # printing header of receiving log
 print(sprintf("time\t\t\t\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
@@ -31,11 +31,17 @@ print(sprintf("-----------------------------------------------------------------
 
 # main routine
 while finish_flag == 0 do
+	begin
+	laz.begin(33,0xABCD,100,20)
 	laz.send(0xabcd,0x904d,"hello pi gateway\n")
-	sleep 1
+	laz.close()
+	rescue => e
+	p e
+	end
+	sleep 0.1
 end
 
 # finishing process
-laz.device_close()
+laz.remove()
 
 

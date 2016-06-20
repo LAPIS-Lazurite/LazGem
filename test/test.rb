@@ -28,14 +28,20 @@ class TestClass < Minitest::Test
 		@@laz = LazGem::Device.new
 		begin
 			p "device close"
-			@@laz.device_close()
+			@@laz.remove()
 		rescue
 		end
 	end
 
 	def test_drviver
-		@@laz.device_open()
+		@@laz.init()
 		#check ch of 100kbps
+		packet = @@laz.getSendMode()
+		assert_equal 6, packet.fetch("addr_type")
+		assert_equal 20, packet.fetch("sense_time")
+		assert_equal 0, packet.fetch("tx_retry")
+		assert_equal 500, packet.fetch("tx_interval")
+		assert_equal 2, packet.fetch("cca_wait")
 		assert_equal 100,@@laz.get_bps()
 		assert_equal 36,@@laz.get_ch()
 		assert_raises (Errno::EINVAL) {@@laz.set_ch(23)}
@@ -85,30 +91,19 @@ class TestClass < Minitest::Test
 		assert_raises (Errno::EINVAL) {@@laz.set_tx_panid(0x80000)}
 
 		#check address
-		assert_equal 0x2301,@@laz.get_my_addr0()
-		assert_equal 0x6745,@@laz.get_my_addr1()
-		assert_equal 0xab89,@@laz.get_my_addr2()
-		assert_equal 0xefcd,@@laz.get_my_addr3()
+		#assert_equal 0x2301,@@laz.get_my_addr0()
+		assert_equal 0xac4e,@@laz.get_my_addr0()
+		assert_raises (Errno::EFAULT) {@@laz.get_my_addr1()}
+		assert_raises (Errno::EFAULT) {@@laz.get_my_addr2()}
+		assert_raises (Errno::EFAULT) {@@laz.get_my_addr3()}
 		assert_equal 0xffff,@@laz.get_tx_addr0()
 		assert_equal 0xffff,@@laz.get_tx_addr1()
 		assert_equal 0xffff,@@laz.get_tx_addr2()
 		assert_equal 0xffff,@@laz.get_tx_addr3()
-		assert_raises (Errno::EINVAL) {@@laz.set_my_addr0(0x0000)}
-		assert_raises (Errno::EINVAL) {@@laz.set_my_addr1(0x0000)}
-		assert_raises (Errno::EINVAL) {@@laz.set_my_addr2(0x0000)}
-		assert_raises (Errno::EINVAL) {@@laz.set_my_addr3(0x0000)}
 		assert_equal 0,@@laz.set_tx_addr0(0)
 		assert_equal 0,@@laz.set_tx_addr1(0)
 		assert_equal 0,@@laz.set_tx_addr2(0)
 		assert_equal 0,@@laz.set_tx_addr3(0)
-		assert_equal 0x2301,@@laz.get_my_addr0()
-		assert_equal 0x6745,@@laz.get_my_addr1()
-		assert_equal 0xab89,@@laz.get_my_addr2()
-		assert_equal 0xefcd,@@laz.get_my_addr3()
-		assert_equal 0,@@laz.get_tx_addr0()
-		assert_equal 0,@@laz.get_tx_addr1()
-		assert_equal 0,@@laz.get_tx_addr2()
-		assert_equal 0,@@laz.get_tx_addr3()
 
 		#check addr_mode
 		assert_equal 6,@@laz.get_addr_type()		#check default
@@ -117,14 +112,6 @@ class TestClass < Minitest::Test
 			assert_equal i,@@laz.get_addr_type()
 		end
 		assert_raises (Errno::EINVAL) {@@laz.set_addr_type(8)}
-
-		#check addr_size
-		assert_equal 2,@@laz.get_addr_size()		#check default
-		for i in 0..3 do
-			assert_equal i,@@laz.set_addr_size(i)
-			assert_equal i,@@laz.get_addr_size()
-		end
-		assert_raises (Errno::EINVAL) {@@laz.set_addr_size(4)}
 
 		#check drv_mode
 		assert_equal 0,@@laz.get_drv_mode()		#check default
@@ -136,16 +123,16 @@ class TestClass < Minitest::Test
 		assert_equal 0xff,@@laz.set_addr_type(0xff)		#check default
 		assert_equal 0xff,@@laz.set_addr_size(0xff)		#check default
 
-		@@laz.device_close()
+		@@laz.remove()
 	end
 
 	def test_reg
-		@@laz.device_open()
+		@@laz.init()
 		for i in 1..10000 do
 			assert_equal 0x2f,@@laz.rf_reg_read(2)
 			assert_equal 0x04,@@laz.rf_reg_read(3)
 		end
-		@@laz.device_close()
+		@@laz.remove()
 	end
 end
 

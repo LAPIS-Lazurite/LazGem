@@ -22,8 +22,9 @@ Signal.trap(:INT){
 #  rate:	bit rate  50 or 100
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
-laz.device_open()
-laz.begin(36,0xABCD,100,20)
+laz.init()
+laz.begin(33,0xABCD,100,20)
+print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
 laz.rxEnable()
 
 # printing header of receiving log
@@ -41,6 +42,6 @@ while finish_flag == 0 do
 end
 
 # finishing process
-laz.device_close()
+laz.remove()
 
 

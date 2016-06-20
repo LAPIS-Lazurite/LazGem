@@ -19,7 +19,7 @@ class LazGem::Device
 	@@device_rd=nil
 	@@device_wr=nil
 
-	def device_open()
+	def init()
 		cmd = "sudo insmod /home/pi/develop/LazDriver/lazdriver.ko"
 		p cmd
 		result = system(cmd)
@@ -43,7 +43,7 @@ class LazGem::Device
 #	none
 # return
 #	none
-	def device_close()
+	def remove()
 		@@device_rd.close
 		@@device_wr.close
 		@@devie_rd = nil
@@ -176,5 +176,6 @@ class LazGem::Device
 		set_tx_panid(panid)
 		set_tx_addr0(addr)
 		@@device_wr.write(payload)
+		sleep 0.001
 	end
 end

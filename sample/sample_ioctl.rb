@@ -22,43 +22,12 @@ Signal.trap(:INT){
 #  rate:	bit rate  50 or 100
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
-laz.device_open()
+laz.init()
+print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
+param= laz.getSendMode()
 
-# main routine
-print(sprintf("default ch=%d\n",laz.get_ch()))
-laz.set_ch(32)
-print(sprintf("ch is changed to 32. then %d\n",laz.get_ch()))
-
-print(sprintf("default pwr=%d\n",laz.get_pwr()))
-laz.set_pwr(1)
-print(sprintf("pwr is changed to 1. then %d\n",laz.get_pwr()))
-
-print(sprintf("default bps=%d\n",laz.get_bps()))
-laz.set_bps(50)
-print(sprintf("bps is changed to 50. then %d\n",laz.get_bps()))
-
-print(sprintf("%02x\n",laz.get_my_panid()))
-laz.set_my_panid(0xffff)
-print(sprintf("%02x\n",laz.get_my_panid()))
-
-print(sprintf("%02x\n",laz.rf_reg_read(2)))
-print(sprintf("%02x\n",laz.rf_reg_read(3)))
-laz.rf_reg_write(3,9)
-print(sprintf("%02x\n",laz.rf_reg_read(3)))
-
-print(sprintf("%02x\n",laz.eeprom_read(0x20)))
-print(sprintf("%02x\n",laz.eeprom_read(0x21)))
-print(sprintf("%02x\n",laz.eeprom_read(0x22)))
-print(sprintf("%02x\n",laz.eeprom_read(0x23)))
-print(sprintf("%02x\n",laz.eeprom_read(0x24)))
-print(sprintf("%02x\n",laz.eeprom_read(0x25)))
-print(sprintf("%02x\n",laz.eeprom_read(0x26)))
-print(sprintf("%02x\n",laz.eeprom_read(0x27)))
-
-laz.tx_led(1)
-laz.rx_led(1)
-
+p param
 # finishing process
-laz.device_close()
+laz.remove()
 
 
