@@ -53,6 +53,12 @@ class LazGem::Device
 	IOCTL_SET_TX_INTERVAL=	IOCTL_PARAM+0x27
 	IOCTL_GET_CCA_WAIT=		IOCTL_PARAM+0x28
 	IOCTL_SET_CCA_WAIT=		IOCTL_PARAM+0x29
+	IOCTL_GET_RX_SEC0=		IOCTL_PARAM+0x2A
+	IOCTL_GET_RX_SEC1=		IOCTL_PARAM+0x2C
+	IOCTL_GET_RX_NSEC0=		IOCTL_PARAM+0x2E
+	IOCTL_GET_RX_NSEC1=		IOCTL_PARAM+0x30
+	IOCTL_GET_RX_RSSI=		IOCTL_PARAM+0x32
+	IOCTL_GET_TX_RSSI=		IOCTL_PARAM+0x34
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF+0x0000
 	IOCTL_RF_WRITE=		IOCTL_RF+0x8000
@@ -318,6 +324,27 @@ class LazGem::Device
 	def set_cca_wait(cca_wait)
 		ret = @@device_wr.ioctl(IOCTL_SET_CCA_WAIT,cca_wait)
 		return ret
+	end
+	def get_rx_time()
+		tmp = 0;
+		rx_sec = @@device_wr.ioctl(IOCTL_GET_RX_SEC1,tmp)
+		rx_sec = rx_sec * 65536 + @@device_wr.ioctl(IOCTL_GET_RX_SEC0,tmp)
+		rx_nsec = @@device_wr.ioctl(IOCTL_GET_RX_NSEC1,tmp)
+		rx_nsec = rx_nsec *65536 + @@device_wr.ioctl(IOCTL_GET_RX_NSEC0,tmp)
+		rx_time = Hash.new()
+		rx_time["sec"] = rx_sec
+		rx_time["nsec"] = rx_nsec
+		return rx_time
+	end
+	def get_rx_rssi()
+		tmp = 0;
+		rssi = @@device_wr.ioctl(IOCTL_GET_RX_RSSI,tmp)
+		return rssi
+	end
+	def get_tx_rssi()
+		tmp = 0;
+		rssi = @@device_wr.ioctl(IOCTL_GET_TX_RSSI,tmp)
+		return rssi
 	end
 
 	def rf_reg_read(addr)

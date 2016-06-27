@@ -30,6 +30,8 @@ class LazGem::Device
 		sleep(0.1)
 		@@device_rd = open(lzgw_dev,"rb")
 		@@device_wr = open(lzgw_dev,"wb")
+		@@device_wr.sync = true
+		@@device_rd.sync = true
 		result = system("tail -n -4 /var/log/messages")
 		print("\n")
 #		p result
@@ -44,8 +46,16 @@ class LazGem::Device
 # return
 #	none
 	def remove()
-		@@device_rd.close
+		begin
+			@@device_rd.close
+		rescue Exception => e
+			p e
+		end
+		begin
 		@@device_wr.close
+		rescue Exception => e
+			p e
+		end
 		@@devie_rd = nil
 		@@device_wr = nil
 		cmd = "sudo rmmod lazdriver"

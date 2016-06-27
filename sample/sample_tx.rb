@@ -24,21 +24,28 @@ Signal.trap(:INT){
 #  mode:	must be 2
 laz.init()
 print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
-
-# printing header of receiving log
-print(sprintf("time\t\t\t\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
-print(sprintf("------------------------------------------------------------------------------------------\n"))
-
+i = 0
 # main routine
 while finish_flag == 0 do
 	begin
 	laz.begin(33,0xABCD,100,20)
-	laz.send(0xabcd,0x904d,"hello pi gateway\n")
-	laz.close()
-	rescue => e
-	p e
+	rescue Exception => e
+		p "file io error!! reset driver"
+		laz.remove()
+		laz.init()
 	end
-	sleep 0.1
+	begin
+	payload =sprintf("hello pi gateway %d\n",i)
+	p payload
+	laz.send(0xabcd,0xac4e,payload)
+	p laz.get_tx_rssi()
+	laz.close()
+	rescue Exception => e
+	p e
+	sleep 1
+	end
+	sleep 0.001
+	i = i + 1
 end
 
 # finishing process

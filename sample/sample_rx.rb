@@ -39,6 +39,9 @@ while finish_flag == 0 do
 	end
 	# printing data
 	p rcv
+	rx_time = laz.get_rx_time()
+	rssi = laz.get_rx_rssi()
+	print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d\n",Time.at(rx_time["sec"]),rx_time["nsec"],rssi));
 end
 
 # finishing process
