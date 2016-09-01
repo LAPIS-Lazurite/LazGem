@@ -3,7 +3,7 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require '../lib/LazGem'
+require 'LazGem'
 
 laz = LazGem::Device.new
 
@@ -23,7 +23,7 @@ Signal.trap(:INT){
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
 laz.init()
-laz.begin(33,0xABCD,100,20)
+laz.begin(36,0xABCD,100,20)
 print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
 laz.rxEnable()
 

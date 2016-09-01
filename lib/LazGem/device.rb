@@ -20,7 +20,7 @@ class LazGem::Device
 	@@device_wr=nil
 
 	def init()
-		cmd = "sudo insmod /home/pi/develop/LazDriver/lazdriver.ko"
+		cmd = "sudo insmod /home/pi/driver/LazDriver/lazdriver.ko"
 		p cmd
 		result = system(cmd)
 		lzgw_dev = "/dev/lzgw"

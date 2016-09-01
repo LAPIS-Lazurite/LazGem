@@ -3,7 +3,7 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require '../lib/LazGem'
+require 'LazGem'
 
 laz = LazGem::Device.new
 
@@ -28,7 +28,7 @@ i = 0
 # main routine
 while finish_flag == 0 do
 	begin
-	laz.begin(33,0xABCD,100,20)
+	laz.begin(36,0xABCD,100,20)
 	rescue Exception => e
 		p "file io error!! reset driver"
 		laz.remove()
@@ -37,14 +37,14 @@ while finish_flag == 0 do
 	begin
 	payload =sprintf("hello pi gateway %d\n",i)
 	p payload
-	laz.send(0xabcd,0xac4e,payload)
+	laz.send(0xabcd,0x5fba,payload)
 	p laz.get_tx_rssi()
 	laz.close()
 	rescue Exception => e
 	p e
 	sleep 1
 	end
-	sleep 0.001
+	sleep 1.000
 	i = i + 1
 end
 
