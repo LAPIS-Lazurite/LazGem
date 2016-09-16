@@ -63,11 +63,20 @@ class LazGem::Device
 		p cmd
 	end
 
+	def available()
+		size = 2
+		len = @@device_rd.read(size)
+    	if ((len == "") || (len == nil)) then # read result is empty
+      		return 0
+		end
+		return size
+	end
+
 	def read()
 		size = 2
 		len = @@device_rd.read(size)
     	if ((len == "") || (len == nil)) then # read result is empty
-      		return -1
+      		return 0
     	end
     	size =  len.unpack("S*")[0]
 
@@ -94,7 +103,7 @@ class LazGem::Device
 		offset = 2
 
 		if seq_comp == 0 then
-			seq = raw[offset..offset+1].unpack("C")[0]
+			seq_num = raw[offset..offset+1].unpack("C")[0]
 			offset = offset + 1
 		end
 
@@ -178,7 +187,12 @@ class LazGem::Device
 		rcv["tx_panid"] = tx_panid
 		rcv["rx_addr"] = rx_addr
 		rcv["tx_addr"] = tx_addr
+		rcv["seq_num"] = seq_num
 		rcv["payload"] = payload
+		sec,nsec = get_rx_time()
+		rcv["sec"]=sec
+		rcv["nsec"]=nsec
+		rcv["rssi"]=get_rx_rssi()
 			
     	return rcv
 	end

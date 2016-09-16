@@ -33,15 +33,13 @@ print(sprintf("-----------------------------------------------------------------
 
 # main routine
 while finish_flag == 0 do
-	rcv = laz.read()
-	if rcv == -1 then
+	if laz.available() <= 0
 		next
 	end
+	rcv = laz.read()
 	# printing data
-	p rcv
-	rx_time = laz.get_rx_time()
-	rssi = laz.get_rx_rssi()
-	print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d\n",Time.at(rx_time["sec"]),rx_time["nsec"],rssi));
+	#p rcv
+	print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d %s\n",Time.at(rcv["sec"]),rcv["nsec"],rcv["rssi"],rcv["payload"]));
 end
 
 # finishing process

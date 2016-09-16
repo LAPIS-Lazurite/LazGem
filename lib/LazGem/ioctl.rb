@@ -140,6 +140,28 @@ class LazGem::Device
 		return ret
 	end
 
+	def getAddrType()
+		ret = @@device_wr.ioctl(IOCTL_GET_SEND_MODE,0)
+		return get_addr_type()
+	end
+	def setAddrType(addr_type)
+		ret = @@device_wr.ioctl(IOCTL_GET_SEND_MODE,0)
+		ret = set_addr_type(addr_type)
+		ret = @@device_wr.ioctl(IOCTL_SET_SEND_MODE,0)
+		return ret
+	end
+
+	def getTxRetry()
+		ret = @@device_wr.ioctl(IOCTL_GET_SEND_MODE,0)
+		return get_tx_retry()
+	end
+	def setTxRetry(cycle)
+		ret = @@device_wr.ioctl(IOCTL_GET_SEND_MODE,0)
+		ret = set_tx_retry(cycle)
+		ret = @@device_wr.ioctl(IOCTL_SET_SEND_MODE,0)
+		return ret
+	end
+
 ###			Libraries
 	def set_begin()
 		data = 0;
@@ -331,10 +353,7 @@ class LazGem::Device
 		rx_sec = rx_sec * 65536 + @@device_wr.ioctl(IOCTL_GET_RX_SEC0,tmp)
 		rx_nsec = @@device_wr.ioctl(IOCTL_GET_RX_NSEC1,tmp)
 		rx_nsec = rx_nsec *65536 + @@device_wr.ioctl(IOCTL_GET_RX_NSEC0,tmp)
-		rx_time = Hash.new()
-		rx_time["sec"] = rx_sec
-		rx_time["nsec"] = rx_nsec
-		return rx_time
+		return rx_sec,rx_nsec
 	end
 	def get_rx_rssi()
 		tmp = 0;
