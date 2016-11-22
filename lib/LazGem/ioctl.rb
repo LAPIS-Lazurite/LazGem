@@ -12,6 +12,7 @@ class LazGem::Device
 	IOCTL_SET_CLOSE=		IOCTL_CMD+0x17
 	IOCTL_GET_SEND_MODE=	 IOCTL_CMD+0x18
 	IOCTL_SET_SEND_MODE=	 IOCTL_CMD+0x19
+	IOCTL_SET_AES=           IOCTL_CMD+0x1a
 	IOCTL_PARAM=		0x1000
 	IOCTL_GET_CH=			IOCTL_PARAM+0x02
 	IOCTL_SET_CH=			IOCTL_PARAM+0x03
@@ -137,6 +138,16 @@ class LazGem::Device
 		rescue Exception
 		end
 		ret = @@device_wr.ioctl(IOCTL_SET_SEND_MODE,data)
+		return ret
+	end
+	def setAes(key)
+#       key_chr = key[0].to_s(16)
+#       for i in 1..15 do
+#           key_chr = key_chr + key[i].to_s(16).downcase
+#       end
+#		ret = @@device_wr.ioctl(IOCTL_SET_AES,key_chr)
+		ret = @@device_wr.ioctl(IOCTL_SET_AES,key)
+        p key
 		return ret
 	end
 
