@@ -141,13 +141,7 @@ class LazGem::Device
 		return ret
 	end
 	def setAes(key)
-#       key_chr = key[0].to_s(16)
-#       for i in 1..15 do
-#           key_chr = key_chr + key[i].to_s(16).downcase
-#       end
-#		ret = @@device_wr.ioctl(IOCTL_SET_AES,key_chr)
 		ret = @@device_wr.ioctl(IOCTL_SET_AES,key)
-        p key
 		return ret
 	end
 
