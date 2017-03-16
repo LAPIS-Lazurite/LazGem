@@ -3,7 +3,7 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require 'LazGem'
+require_relative '../lib/LazGem'
 
 laz = LazGem::Device.new
 
@@ -23,12 +23,12 @@ Signal.trap(:INT){
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
 laz.init()
-laz.begin(36,0xABCD,100,20)
-print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
+laz.begin(24,0xABCD,100,20)
+print(sprintf("myAddress=0x%04x\n",laz.getMyAddr64()))
 laz.rxEnable()
 
 # printing header of receiving log
-print(sprintf("time\t\t\t\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
+print(sprintf("time\t\t\t\t\t[ns]\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
 print(sprintf("------------------------------------------------------------------------------------------\n"))
 
 # main routine
@@ -38,8 +38,17 @@ while finish_flag == 0 do
 	end
 	rcv = laz.read()
 	# printing data
-	#p rcv
-	print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d %s\n",Time.at(rcv["sec"]),rcv["nsec"],rcv["rssi"],rcv["payload"]));
+	p rcv
+	'''
+	print(sprintf("%s\t%d\t%04x\t%04x\t%04x\t%d\t%s\n",
+		Time.at(rcv["sec"]),
+		rcv["nsec"],
+		rcv["rx_panid"],
+		rcv["rx_addr"],
+		rcv["tx_addr"],
+		rcv["rssi"],
+		rcv["payload"]));
+	'''
 end
 
 # finishing process

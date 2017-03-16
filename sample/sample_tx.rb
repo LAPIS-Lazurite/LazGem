@@ -3,7 +3,8 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require 'LazGem'
+#require 'LazGem'
+require_relative '../lib/LazGem'
 
 laz = LazGem::Device.new
 
@@ -23,7 +24,7 @@ Signal.trap(:INT){
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
 laz.init()
-print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
+print(sprintf("myAddress=0x%016x\n",laz.getMyAddr64()))
 i = 0
 # main routine
 while finish_flag == 0 do
@@ -35,17 +36,14 @@ while finish_flag == 0 do
 		laz.init()
 	end
 	begin
-	payload =sprintf("hello pi gateway %d\n",i)
-	p payload
-	laz.send(0xabcd,0x5fba,payload)
-	p laz.get_tx_rssi()
-	laz.close()
+		laz.send64(0xabcd,0x001D129000047fad,"LAPIS Lazurite RF system")
+		#laz.send64(0xfffe,0x001D129000047fad,"LAPIS Lazurite RF system")
 	rescue Exception => e
 	p e
 	sleep 1
 	end
+	laz.close()
 	sleep 1.000
-	i = i + 1
 end
 
 # finishing process

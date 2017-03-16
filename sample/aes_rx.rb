@@ -4,7 +4,8 @@
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'LazGem'
+#require 'LazGem'
+require_relative '../lib/LazGem'
 
 laz = LazGem::Device.new
 

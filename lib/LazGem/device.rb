@@ -19,8 +19,8 @@ class LazGem::Device
 	@@device_rd=nil
 	@@device_wr=nil
 
-	def init()
-		cmd = "sudo insmod /home/pi/driver/LazDriver/lazdriver.ko"
+	def init(module_test=0x0000)
+		cmd = "sudo insmod /home/pi/driver/LazDriver/lazdriver.ko module_test="+module_test.to_s
 		p cmd
 		result = system(cmd)
 		lzgw_dev = "/dev/lzgw"
@@ -90,9 +90,9 @@ class LazGem::Device
 		len = raw.length
 		header = raw.unpack("S*")[0]
 
-		rx_addr_type = (header>>14) & 0x03
+		tx_addr_type = (header>>14) & 0x03
 		frame_ver = (header >> 12) & 0x03
-		tx_addr_type = (header >> 10) & 0x03
+		rx_addr_type = (header >> 10) & 0x03
 		ielist = (header >> 9) & 0x01
 		seq_comp = (header >> 8) & 0x01
 		panid_comp = (header >> 6) & 0x01
@@ -147,24 +147,38 @@ class LazGem::Device
 		end
 
 		if rx_addr_type == 1 then
-			rx_addr = raw[offset..offset+1].unpack("C")[0]
+			rx_addr = raw[offset].unpack("C")[0]
 			offset = offset+1
 		elsif rx_addr_type == 2 then
-			rx_addr = raw[offset..offset+2].unpack("S*")[0]
+			rx_addr = raw[offset..offset+1].unpack("S*")[0]
 			offset = offset+2
 		else
-			rx_addr = raw[offset..offset+8].unpack("H*")[0]
+			rx_addr = raw[offset+7].unpack("H2")[0] +
+				raw[offset+6].unpack("H2")[0] +
+				raw[offset+5].unpack("H2")[0] +
+				raw[offset+4].unpack("H2")[0] +
+				raw[offset+3].unpack("H2")[0] +
+				raw[offset+2].unpack("H2")[0] +
+				raw[offset+1].unpack("H2")[0] +
+				raw[offset+0].unpack("H2")[0]
 			offset = offset+8
 		end
 
 		if tx_addr_type == 1 then
-			tx_addr = raw[offset..offset+1].unpack("C")[0]
+			tx_addr = raw[offset].unpack("C")[0]
 			offset = offset+1
 		elsif tx_addr_type == 2 then
-			tx_addr = raw[offset..offset+2].unpack("S")[0]
+			tx_addr = raw[offset..offset+1].unpack("S")[0]
 			offset = offset+2
 		else
-			tx_addr = raw[offset..offset+8].unpack("H*")[0]
+			tx_addr = raw[offset+7].unpack("H2")[0] +
+				raw[offset+6].unpack("H2")[0] +
+				raw[offset+5].unpack("H2")[0] +
+				raw[offset+4].unpack("H2")[0] +
+				raw[offset+3].unpack("H2")[0] +
+				raw[offset+2].unpack("H2")[0] +
+				raw[offset+1].unpack("H2")[0] +
+				raw[offset+0].unpack("H2")[0]
 			offset = offset+8
 		end
 
@@ -196,6 +210,15 @@ class LazGem::Device
 		rcv["rssi"]=get_rx_rssi()
 			
     	return rcv
+	end
+	def send64(panid,addr,payload)
+		set_tx_panid(panid)
+		set_tx_addr0((addr >>  0)&0x000000000000ffff)
+		set_tx_addr1((addr >> 16)&0x000000000000ffff)
+		set_tx_addr2((addr >> 32)&0x000000000000ffff)
+		set_tx_addr3((addr >> 48)&0x000000000000ffff)
+		@@device_wr.write(payload)
+		sleep 0.001
 	end
 	def send(panid,addr,payload)
 		set_tx_panid(panid)
