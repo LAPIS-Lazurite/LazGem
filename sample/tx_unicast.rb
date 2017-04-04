@@ -38,7 +38,7 @@ class TestClass < Minitest::Test
 		ch = gets().to_i
         @@laz.begin(ch,0xabcd,100,20)
         for num in 1..10 do
-            @@laz.send(0xabcd,0x5f6e,"LAPIS Lazurite RF system")
+            @@laz.send(0xabcd,0xac48,"LAPIS Lazurite RF system")
         end
         @@laz.remove()
 	end
