@@ -36,9 +36,12 @@ class TestClass < Minitest::Test
         @@laz.init(module_test = 0x3000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
         printf("input channel number(24-60):")
 		ch = gets().to_i
+        printf("input sleep time(sec:ex 0.5):")
+		sl_time = gets().to_f
         @@laz.begin(ch,0xabcd,100,20)
         for num in 1..100 do
             @@laz.send(0xffff,0xffff,"LAPIS Lazurite RF system")
+            sleep(sl_time)
         end
         @@laz.remove()
 	end
