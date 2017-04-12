@@ -40,8 +40,15 @@ class TestClass < Minitest::Test
 		sl_time = gets().to_f
         @@laz.begin(ch,0xabcd,100,20)
         for num in 1..100 do
-            @@laz.send(0xabcd,0xac48,"LAPIS Lazurite RF system")
-            sleep(sl_time)
+            begin 
+                status = @@laz.send(0xabcd,0xac48,"LAPIS Lazurite RF system")
+            rescue
+                printf("No.%d:TX FAIL\n",num)
+            else
+                printf("No.%d:TX SUCCEESS\n",num)
+            ensure
+                sleep(sl_time)
+            end
         end
         @@laz.remove()
 	end
