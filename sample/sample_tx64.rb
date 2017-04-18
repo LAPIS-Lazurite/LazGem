@@ -13,17 +13,17 @@ finish_flag=0
 Signal.trap(:INT){
 	finish_flag=1
 }
-if ARGV.size == 0
-	printf("please input argument of ch at least\n")
+if ARGV.size < 3
+	printf("please input argument of ch at least 3\n")
 	printf("command format is shown below...\n")
-	printf("./sample_tx.rb ch panid dst_short_addr baud pwr\n")
+	printf("./sample_tx.rb ch panid ieee_addr baud pwr\n")
 	exit 0
 end
 
 # open device deriver
 laz.init()
 
-dst_short_addr = 0xffff
+ieee_addr = 0x001D129000045F6B
 ch = 36
 panid = 0xabcd
 baud = 100
@@ -36,7 +36,7 @@ if ARGV.size > 1
 	panid = Integer(ARGV[1])
 end
 if ARGV.size > 2
-	dst_short_addr = Integer(ARGV[2])
+	ieee_addr = Integer(ARGV[2])
 end
 if ARGV.size > 3
 	baud = Integer(ARGV[3])
@@ -56,7 +56,7 @@ while finish_flag == 0 do
 		laz.init()
 	end
 	begin
-		laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
+		laz.send64(ieee_addr,"LAPIS Lazurite RF system")
 	rescue Exception => e
 		p e
 		sleep 1

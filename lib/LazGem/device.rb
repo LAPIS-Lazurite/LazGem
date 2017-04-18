@@ -90,9 +90,9 @@ class LazGem::Device
 		len = raw.length
 		header = raw.unpack("S*")[0]
 
-		tx_addr_type = (header>>14) & 0x03
+		dst_addr_type = (header>>14) & 0x03
 		frame_ver = (header >> 12) & 0x03
-		rx_addr_type = (header >> 10) & 0x03
+		src_addr_type = (header >> 10) & 0x03
 		ielist = (header >> 9) & 0x01
 		seq_comp = (header >> 8) & 0x01
 		panid_comp = (header >> 6) & 0x01
@@ -108,52 +108,52 @@ class LazGem::Device
 			offset = offset + 1
 		end
 
-		if rx_addr_type == 0 && tx_addr_type == 0 && panid_comp == 0 then
+		if dst_addr_type == 0 && src_addr_type == 0 && panid_comp == 0 then
 			addr_type = 0
-			rx_panid = nil
-			tx_panid = nil
-		elsif rx_addr_type == 0 && tx_addr_type == 0 && panid_comp != 0 then
+			dst_panid = nil
+			src_panid = nil
+		elsif dst_addr_type == 0 && src_addr_type == 0 && panid_comp != 0 then
 			addr_type = 1
-			rx_panid = raw[offset..offset+2].unpack("S*")[0]
+			dst_panid = raw[offset..offset+2].unpack("S*")[0]
 			offset = offset + 2
-			tx_panid = nil
-		elsif rx_addr_type == 0 && tx_addr_type != 0 && panid_comp == 0 then
+			dst_panid = nil
+		elsif dst_addr_type == 0 && src_addr_type != 0 && panid_comp == 0 then
 			addr_type = 2
-			rx_panid = nil
-			tx_panid = raw[offset..offset+2].unpack("S*")[0]
+			dst_panid = nil
+			src_panid = raw[offset..offset+2].unpack("S*")[0]
 			offset = offset + 2
-		elsif rx_addr_type == 0 && tx_addr_type != 0 && panid_comp != 0 then
+		elsif dst_addr_type == 0 && src_addr_type != 0 && panid_comp != 0 then
 			addr_type = 3
-			rx_panid = nil
-			tx_panid = nil
-		elsif rx_addr_type != 0 && tx_addr_type == 0 && panid_comp == 0 then
+			dst_panid = nil
+			src_panid = nil
+		elsif dst_addr_type != 0 && src_addr_type == 0 && panid_comp == 0 then
 			addr_type = 4
-			rx_panid = raw[offset..offset+2].unpack("S*")[0]
+			dst_panid = raw[offset..offset+2].unpack("S*")[0]
 			offset = offset + 2
-			tx_panid = nil
-		elsif rx_addr_type != 0 && tx_addr_type == 0 && panid_comp != 0 then
+			src_panid = nil
+		elsif dst_addr_type != 0 && src_addr_type == 0 && panid_comp != 0 then
 			addr_type = 5
-			rx_panid = nil
-			tx_panid = nil
-		elsif rx_addr_type != 0 && tx_addr_type != 0 && panid_comp == 0 then
+			dst_panid = nil
+			src_panid = nil
+		elsif dst_addr_type != 0 && src_addr_type != 0 && panid_comp == 0 then
 			addr_type = 6
-			rx_panid = raw[offset..offset+2].unpack("S*")[0]
+			dst_panid = raw[offset..offset+2].unpack("S*")[0]
 			offset = offset + 2
-			tx_panid = nil
-		elsif rx_addr_type != 0 && tx_addr_type != 0 && panid_comp != 0 then
+			src_panid = nil
+		elsif dst_addr_type != 0 && src_addr_type != 0 && panid_comp != 0 then
 			addr_type = 7
-			rx_panid = nil
-			tx_panid = nil
+			dst_panid = nil
+			src_panid = nil
 		end
 
-		if rx_addr_type == 1 then
-			rx_addr = raw[offset].unpack("C")[0]
+		if dst_addr_type == 1 then
+			dst_addr = raw[offset].unpack("C")[0]
 			offset = offset+1
-		elsif rx_addr_type == 2 then
-			rx_addr = raw[offset..offset+1].unpack("S*")[0]
+		elsif dst_addr_type == 2 then
+			dst_addr = raw[offset..offset+1].unpack("S*")[0]
 			offset = offset+2
 		else
-			rx_addr = raw[offset+7].unpack("H2")[0] +
+			dst_addr = raw[offset+7].unpack("H2")[0] +
 				raw[offset+6].unpack("H2")[0] +
 				raw[offset+5].unpack("H2")[0] +
 				raw[offset+4].unpack("H2")[0] +
@@ -164,14 +164,14 @@ class LazGem::Device
 			offset = offset+8
 		end
 
-		if tx_addr_type == 1 then
-			tx_addr = raw[offset].unpack("C")[0]
+		if src_addr_type == 1 then
+			src_addr = raw[offset].unpack("C")[0]
 			offset = offset+1
-		elsif tx_addr_type == 2 then
-			tx_addr = raw[offset..offset+1].unpack("S")[0]
+		elsif src_addr_type == 2 then
+			src_addr = raw[offset..offset+1].unpack("S")[0]
 			offset = offset+2
 		else
-			tx_addr = raw[offset+7].unpack("H2")[0] +
+			src_addr = raw[offset+7].unpack("H2")[0] +
 				raw[offset+6].unpack("H2")[0] +
 				raw[offset+5].unpack("H2")[0] +
 				raw[offset+4].unpack("H2")[0] +
@@ -187,9 +187,9 @@ class LazGem::Device
 		rcv = Hash.new()
 
 		rcv["header"] = header
-		rcv["rx_addr_type"] = rx_addr_type
+		rcv["dst_addr_type"] = dst_addr_type
 		rcv["frame_ver"] = frame_ver
-		rcv["tx_addr_type"] = tx_addr_type
+		rcv["src_addr_type"] = src_addr_type
 		rcv["ielist"] = ielist
 		rcv["seq_comp"] = seq_comp
 		rcv["panid_comp"] = panid_comp
@@ -198,10 +198,10 @@ class LazGem::Device
 		rcv["sec_enb"] = sec_enb
 		rcv["frame_type"] = frame_type
 		rcv["addr_type"] = addr_type
-		rcv["rx_panid"] = rx_panid
-		rcv["tx_panid"] = tx_panid
-		rcv["rx_addr"] = rx_addr
-		rcv["tx_addr"] = tx_addr
+		rcv["dst_panid"] = dst_panid
+		rcv["src_panid"] = src_panid
+		rcv["dst_addr"] = dst_addr
+		rcv["src_addr"] = src_addr
 		rcv["seq_num"] = seq_num
 		rcv["payload"] = payload
 		sec,nsec = get_rx_time()
@@ -211,18 +211,17 @@ class LazGem::Device
 			
     	return rcv
 	end
-	def send64(panid,addr,payload)
-		set_tx_panid(panid)
-		set_tx_addr0((addr >>  0)&0x000000000000ffff)
-		set_tx_addr1((addr >> 16)&0x000000000000ffff)
-		set_tx_addr2((addr >> 32)&0x000000000000ffff)
-		set_tx_addr3((addr >> 48)&0x000000000000ffff)
+	def send64(addr,payload)
+		set_dst_addr0((addr >>  0)&0x000000000000ffff)
+		set_dst_addr1((addr >> 16)&0x000000000000ffff)
+		set_dst_addr2((addr >> 32)&0x000000000000ffff)
+		set_dst_addr3((addr >> 48)&0x000000000000ffff)
 		@@device_wr.write(payload)
 		sleep 0.001
 	end
 	def send(panid,addr,payload)
-		set_tx_panid(panid)
-		set_tx_addr0(addr)
+		set_dst_panid(panid)
+		set_dst_addr0(addr)
 		@@device_wr.write(payload)
 		sleep 0.001
 	end

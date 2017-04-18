@@ -22,8 +22,8 @@ class LazGem::Device
 	IOCTL_SET_BPS=			IOCTL_PARAM+0x07
 	IOCTL_GET_MY_PANID=		IOCTL_PARAM+0x08
 	IOCTL_SET_MY_PANID=		IOCTL_PARAM+0x09
-	IOCTL_GET_TX_PANID=		IOCTL_PARAM+0x0a
-	IOCTL_SET_TX_PANID=		IOCTL_PARAM+0x0b
+	IOCTL_GET_DST_PANID=		IOCTL_PARAM+0x0a
+	IOCTL_SET_DST_PANID=		IOCTL_PARAM+0x0b
 	IOCTL_GET_MY_ADDR0=		IOCTL_PARAM+0x0c
 	IOCTL_SET_MY_ADDR0=		IOCTL_PARAM+0x0d
 	IOCTL_GET_MY_ADDR1=		IOCTL_PARAM+0x0e
@@ -32,14 +32,14 @@ class LazGem::Device
 	IOCTL_SET_MY_ADDR2=		IOCTL_PARAM+0x11
 	IOCTL_GET_MY_ADDR3=		IOCTL_PARAM+0x12
 	IOCTL_SET_MY_ADDR3=		IOCTL_PARAM+0x13
-	IOCTL_GET_TX_ADDR0=		IOCTL_PARAM+0x14
-	IOCTL_SET_TX_ADDR0=		IOCTL_PARAM+0x15
-	IOCTL_GET_TX_ADDR1=		IOCTL_PARAM+0x16
-	IOCTL_SET_TX_ADDR1=		IOCTL_PARAM+0x17
-	IOCTL_GET_TX_ADDR2=		IOCTL_PARAM+0x18
-	IOCTL_SET_TX_ADDR2=		IOCTL_PARAM+0x19
-	IOCTL_GET_TX_ADDR3=		IOCTL_PARAM+0x1a
-	IOCTL_SET_TX_ADDR3=		IOCTL_PARAM+0x1b
+	IOCTL_GET_DST_ADDR0=	IOCTL_PARAM+0x14
+	IOCTL_SET_DST_ADDR0=	IOCTL_PARAM+0x15
+	IOCTL_GET_DST_ADDR1=	IOCTL_PARAM+0x16
+	IOCTL_SET_DST_ADDR1=	IOCTL_PARAM+0x17
+	IOCTL_GET_DST_ADDR2=	IOCTL_PARAM+0x18
+	IOCTL_SET_DST_ADDR2=	IOCTL_PARAM+0x19
+	IOCTL_GET_DST_ADDR3=	IOCTL_PARAM+0x1a
+	IOCTL_SET_DST_ADDR3=	IOCTL_PARAM+0x1b
 	IOCTL_GET_ADDR_TYPE=	IOCTL_PARAM+0x1c
 	IOCTL_SET_ADDR_TYPE=	IOCTL_PARAM+0x1d
 	IOCTL_GET_ADDR_SIZE=	IOCTL_PARAM+0x1e
@@ -76,16 +76,16 @@ class LazGem::Device
 		return set_begin()
 	end
 	def getMyAddress()
-		return get_my_addr0()
+		return get_my_addr3()
 	end
 	def getMyAddr64()
-		data = get_my_addr3();
-		addr = data << 48;
-		data = get_my_addr2();
-		addr = addr | (data << 32);
-		data = get_my_addr1();
-		addr = addr | (data << 16);
 		data = get_my_addr0();
+		addr = data << 48;
+		data = get_my_addr1();
+		addr = addr | (data << 32);
+		data = get_my_addr2();
+		addr = addr | (data << 16);
+		data = get_my_addr3();
 		addr = addr | (data << 0);
 		return addr;
 	end
@@ -219,13 +219,13 @@ class LazGem::Device
 		ret = @@device_wr.ioctl(IOCTL_SET_MY_PANID,panid)
 		return ret
 	end
-	def get_tx_panid()
+	def get_dst_panid()
 		panid = 0;
-		ret = @@device_wr.ioctl(IOCTL_GET_TX_PANID,panid)
+		ret = @@device_wr.ioctl(IOCTL_GET_DST_PANID,panid)
 		return ret
 	end
-	def set_tx_panid(panid)
-		ret = @@device_wr.ioctl(IOCTL_SET_TX_PANID,panid)
+	def set_dst_panid(panid)
+		ret = @@device_wr.ioctl(IOCTL_SET_DST_PANID,panid)
 		return ret
 	end
 	def get_my_addr0()
@@ -264,40 +264,40 @@ class LazGem::Device
 		ret = @@device_wr.ioctl(IOCTL_SET_MY_ADDR3,addr)
 		return ret
 	end
-	def get_tx_addr0()
+	def get_dst_addr0()
 		addr = 0;
-		ret = @@device_wr.ioctl(IOCTL_GET_TX_ADDR0,addr)
+		ret = @@device_wr.ioctl(IOCTL_GET_DST_ADDR0,addr)
 		return ret
 	end
-	def set_tx_addr0(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_TX_ADDR0,addr)
+	def set_dst_addr0(addr)
+		ret = @@device_wr.ioctl(IOCTL_SET_DST_ADDR0,addr)
 		return ret
 	end
-	def get_tx_addr1()
+	def get_dst_addr1()
 		addr = 0;
-		ret = @@device_wr.ioctl(IOCTL_GET_TX_ADDR1,addr)
+		ret = @@device_wr.ioctl(IOCTL_GET_DST_ADDR1,addr)
 		return ret
 	end
-	def set_tx_addr1(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_TX_ADDR1,addr)
+	def set_dst_addr1(addr)
+		ret = @@device_wr.ioctl(IOCTL_SET_DST_ADDR1,addr)
 		return ret
 	end
-	def get_tx_addr2()
+	def get_dst_addr2()
 		addr = 0;
-		ret = @@device_wr.ioctl(IOCTL_GET_TX_ADDR2,addr)
+		ret = @@device_wr.ioctl(IOCTL_GET_DST_ADDR2,addr)
 		return ret
 	end
-	def set_tx_addr2(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_TX_ADDR2,addr)
+	def set_dst_addr2(addr)
+		ret = @@device_wr.ioctl(IOCTL_SET_DST_ADDR2,addr)
 		return ret
 	end
-	def get_tx_addr3()
+	def get_dst_addr3()
 		addr = 0;
-		ret = @@device_wr.ioctl(IOCTL_GET_TX_ADDR3,addr)
+		ret = @@device_wr.ioctl(IOCTL_GET_DST_ADDR3,addr)
 		return ret
 	end
-	def set_tx_addr3(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_TX_ADDR3,addr)
+	def set_dst_addr3(addr)
+		ret = @@device_wr.ioctl(IOCTL_SET_DST_ADDR3,addr)
 		return ret
 	end
 	def get_addr_type()

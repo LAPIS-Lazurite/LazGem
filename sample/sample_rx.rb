@@ -12,19 +12,40 @@ finish_flag=0
 Signal.trap(:INT){
 	finish_flag=1
 }
+
+if ARGV.size == 0
+	printf("please input argument of ch at least\n")
+	printf("command format is shown below...\n")
+	printf("./sample_rx.rb ch panid baud pwr\n")
+	exit 0
+end
+
 # open device deriver
-# 
-# LAZURITE.open(ch=36,panid=0xabcd,pwr=20,rate=100),mode=2)
-# parameter
-#  ch:		frequency 24-61. 36 is in default
-#  panid:	pan id
-#  pwr:		tx power
-#  rate:	bit rate  50 or 100
-#  pwr:		tx power  1 or 20
-#  mode:	must be 2
 laz.init()
-laz.begin(24,0xABCD,100,20)
-print(sprintf("myAddress=0x%04x\n",laz.getMyAddr64()))
+
+dst_addr = 0xffff
+ch = 36
+panid = 0xabcd
+baud = 100
+pwr = 20
+
+if ARGV.size > 0
+	ch=Integer(ARGV[0])
+end
+if ARGV.size > 1
+	panid = Integer(ARGV[1])
+end
+if ARGV.size > 2
+	baud = Integer(ARGV[2])
+end
+if ARGV.size > 3
+	pwr = Integer(ARGV[3])
+end
+
+print(sprintf("myAddress=0x%016x\n",laz.getMyAddr64()))
+print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
+
+laz.begin(ch,panid,baud,pwr)
 laz.rxEnable()
 
 # printing header of receiving log
@@ -39,16 +60,6 @@ while finish_flag == 0 do
 	rcv = laz.read()
 	# printing data
 	p rcv
-	'''
-	print(sprintf("%s\t%d\t%04x\t%04x\t%04x\t%d\t%s\n",
-		Time.at(rcv["sec"]),
-		rcv["nsec"],
-		rcv["rx_panid"],
-		rcv["rx_addr"],
-		rcv["tx_addr"],
-		rcv["rssi"],
-		rcv["payload"]));
-	'''
 end
 
 # finishing process
