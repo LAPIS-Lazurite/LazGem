@@ -1,0 +1,17 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+LazGemTest	LazGem_test.rb	/^class LazGemTest < Minitest::Test$/;"	c
+TestClass	test.rb	/^class TestClass < Minitest::Test$/;"	c
+TestClass	test_regread.rb	/^class TestClass < Minitest::Test$/;"	c
+setup	test.rb	/^	def setup$/;"	f	class:TestClass
+setup	test_regread.rb	/^	def setup$/;"	f	class:TestClass
+test_drviver	test.rb	/^	def test_drviver$/;"	f	class:TestClass
+test_drviver	test_regread.rb	/^	def test_drviver$/;"	f	class:TestClass
+test_it_does_something_useful	LazGem_test.rb	/^  def test_it_does_something_useful$/;"	f	class:LazGemTest
+test_reg	test.rb	/^	def test_reg$/;"	f	class:TestClass.test_drviver
+test_reg	test_regread.rb	/^	def test_reg$/;"	f	class:TestClass.test_drviver
+test_that_it_has_a_version_number	LazGem_test.rb	/^  def test_that_it_has_a_version_number$/;"	f	class:LazGemTest

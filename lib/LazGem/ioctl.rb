@@ -25,13 +25,11 @@ class LazGem::Device
 	IOCTL_GET_DST_PANID=		IOCTL_PARAM+0x0a
 	IOCTL_SET_DST_PANID=		IOCTL_PARAM+0x0b
 	IOCTL_GET_MY_ADDR0=		IOCTL_PARAM+0x0c
-	IOCTL_SET_MY_ADDR0=		IOCTL_PARAM+0x0d
-	IOCTL_GET_MY_ADDR1=		IOCTL_PARAM+0x0e
-	IOCTL_SET_MY_ADDR1=		IOCTL_PARAM+0x0f
-	IOCTL_GET_MY_ADDR2=		IOCTL_PARAM+0x10
-	IOCTL_SET_MY_ADDR2=		IOCTL_PARAM+0x11
-	IOCTL_GET_MY_ADDR3=		IOCTL_PARAM+0x12
-	IOCTL_SET_MY_ADDR3=		IOCTL_PARAM+0x13
+	IOCTL_GET_MY_ADDR1=		IOCTL_PARAM+0x0d
+	IOCTL_GET_MY_ADDR2=		IOCTL_PARAM+0x0e
+	IOCTL_GET_MY_ADDR3=		IOCTL_PARAM+0x0f
+	IOCTL_SET_MY_SHORT_ADDR=IOCTL_PARAM+0x10
+	IOCTL_GET_MY_SHORT_ADDR=IOCTL_PARAM+0x11
 	IOCTL_GET_DST_ADDR0=	IOCTL_PARAM+0x14
 	IOCTL_SET_DST_ADDR0=	IOCTL_PARAM+0x15
 	IOCTL_GET_DST_ADDR1=	IOCTL_PARAM+0x16
@@ -60,6 +58,7 @@ class LazGem::Device
 	IOCTL_GET_RX_NSEC1=		IOCTL_PARAM+0x30
 	IOCTL_GET_RX_RSSI=		IOCTL_PARAM+0x32
 	IOCTL_GET_TX_RSSI=		IOCTL_PARAM+0x34
+	IOCTL_SET_PROMISCUOUS=	IOCTL_PARAM+0x35
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF+0x0000
 	IOCTL_RF_WRITE=		IOCTL_RF+0x8000
@@ -75,8 +74,14 @@ class LazGem::Device
 		set_pwr(pwr)
 		return set_begin()
 	end
+	def setMyAddress(addr)
+		ret = @@device_wr.ioctl(IOCTL_SET_MY_SHORT_ADDR,addr)
+		return ret
+	end
 	def getMyAddress()
-		return get_my_addr3()
+		addr = 0;
+		ret = @@device_wr.ioctl(IOCTL_GET_MY_SHORT_ADDR,addr)
+		return ret
 	end
 	def getMyAddr64()
 		data = get_my_addr0();
@@ -98,6 +103,9 @@ class LazGem::Device
 		rxon = 1
 		ret = @@device_wr.ioctl(IOCTL_SET_RXON,rxon)
 		return ret
+	end
+	def setPromiscuous(on)
+		ret = @@device_wr.ioctl(IOCTL_SET_PROMISCUOUS,on)
 	end
 	def close()
 		data = 0
@@ -233,17 +241,9 @@ class LazGem::Device
 		ret = @@device_wr.ioctl(IOCTL_GET_MY_ADDR0,addr)
 		return ret
 	end
-	def set_my_addr0(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_MY_ADDR0,addr)
-		return ret
-	end
 	def get_my_addr1()
 		addr = 0;
 		ret = @@device_wr.ioctl(IOCTL_GET_MY_ADDR1,addr)
-		return ret
-	end
-	def set_my_addr1(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_MY_ADDR1,addr)
 		return ret
 	end
 	def get_my_addr2()
@@ -251,17 +251,9 @@ class LazGem::Device
 		ret = @@device_wr.ioctl(IOCTL_GET_MY_ADDR2,addr)
 		return ret
 	end
-	def set_my_addr2(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_MY_ADDR2,addr)
-		return ret
-	end
 	def get_my_addr3()
 		addr = 0;
 		ret = @@device_wr.ioctl(IOCTL_GET_MY_ADDR3,addr)
-		return ret
-	end
-	def set_my_addr3(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_MY_ADDR3,addr)
 		return ret
 	end
 	def get_dst_addr0()
