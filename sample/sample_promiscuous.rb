@@ -21,7 +21,7 @@ if ARGV.size == 0
 end
 
 # open device deriver
-laz.init(module_test=0x7000)
+laz.init(module_test=0x0000)
 
 dst_addr = 0xffff
 ch = 36
@@ -47,6 +47,7 @@ print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
 print(sprintf("ch=%d, panid = %04x, baud= %d, pwr=%d\n",ch,panid,baud,pwr))
 laz.begin(ch,panid,baud,pwr)
 laz.setPromiscuous(true)
+laz.rxEnable()
 
 # printing header of receiving log
 print(sprintf("time\t\t\t\t\t[ns]\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
@@ -61,6 +62,7 @@ while finish_flag == 0 do
 	# printing data
 	p rcv
 end
+laz.rxDisable()
 laz.setPromiscuous(false)
 
 # finishing process
