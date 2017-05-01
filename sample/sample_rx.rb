@@ -21,7 +21,6 @@ if ARGV.size == 0
 end
 
 # open device deriver
-laz.init()
 
 dst_addr = 0xffff
 ch = 36
@@ -41,6 +40,8 @@ end
 if ARGV.size > 3
 	pwr = Integer(ARGV[3])
 end
+
+laz.init(module_test=0x7000)
 
 print(sprintf("myAddress=0x%016x\n",laz.getMyAddr64()))
 print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))

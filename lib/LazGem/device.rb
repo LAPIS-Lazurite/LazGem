@@ -146,7 +146,9 @@ class LazGem::Device
 			src_panid = nil
 		end
 
-		if dst_addr_type == 1 then
+		if dst_addr_type == 0 then
+			dst_addr = nil
+		elsif dst_addr_type == 1 then
 			dst_addr = raw[offset].unpack("C")[0]
 			offset = offset+1
 		elsif dst_addr_type == 2 then
@@ -164,7 +166,9 @@ class LazGem::Device
 			offset = offset+8
 		end
 
-		if src_addr_type == 1 then
+		if src_addr_type == 0 then
+			src_addr = nil
+		elsif src_addr_type == 1 then
 			src_addr = raw[offset].unpack("C")[0]
 			offset = offset+1
 		elsif src_addr_type == 2 then

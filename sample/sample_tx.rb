@@ -21,9 +21,9 @@ if ARGV.size == 0
 end
 
 # open device deriver
-laz.init()
+laz.init(module_test=0x0000)
 
-dst_short_addr = 0xffff
+dst_short_addr = 0x6670
 ch = 36
 panid = 0xabcd
 baud = 100
