@@ -4,22 +4,3 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-TestClass	all_phy.rb	/^class TestClass < Minitest::Test$/;"	c
-TestClass	rx_Enable_Disable.rb	/^class TestClass < Minitest::Test$/;"	c
-TestClass	rx_phy.rb	/^class TestClass < Minitest::Test$/;"	c
-TestClass	test.rb	/^class TestClass < Minitest::Test$/;"	c
-TestClass	tx_broadcast.rb	/^class TestClass < Minitest::Test$/;"	c
-TestClass	tx_unicast.rb	/^class TestClass < Minitest::Test$/;"	c
-setup	all_phy.rb	/^	def setup$/;"	f	class:TestClass
-setup	rx_Enable_Disable.rb	/^	def setup$/;"	f	class:TestClass
-setup	rx_phy.rb	/^	def setup$/;"	f	class:TestClass
-setup	test.rb	/^	def setup$/;"	f	class:TestClass
-setup	tx_broadcast.rb	/^	def setup$/;"	f	class:TestClass
-setup	tx_unicast.rb	/^	def setup$/;"	f	class:TestClass
-test_drviver	test.rb	/^	def test_drviver$/;"	f	class:TestClass
-test_phy	all_phy.rb	/^	def test_phy$/;"	f	class:TestClass
-test_phy	rx_Enable_Disable.rb	/^	def test_phy$/;"	f	class:TestClass
-test_phy	rx_phy.rb	/^	def test_phy$/;"	f	class:TestClass
-test_phy	tx_broadcast.rb	/^	def test_phy$/;"	f	class:TestClass
-test_phy	tx_unicast.rb	/^	def test_phy$/;"	f	class:TestClass
-test_subghz_setup	test.rb	/^	def test_subghz_setup$/;"	f	class:TestClass.test_drviver

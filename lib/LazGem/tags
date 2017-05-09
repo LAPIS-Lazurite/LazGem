@@ -49,8 +49,11 @@ rxEnable	ioctl.rb	/^	def rxEnable()$/;"	f	class:LazGem
 rx_led	ioctl.rb	/^	def rx_led(time)$/;"	f	class:LazGem
 send	device.rb	/^	def send(panid,addr,payload)$/;"	f	class:LazGem
 send64	device.rb	/^	def send64(addr,payload)$/;"	f	class:LazGem
+setAckReq	ioctl.rb	/^	def setAckReq(on)$/;"	f	class:LazGem
 setAddrType	ioctl.rb	/^	def setAddrType(addr_type)$/;"	f	class:LazGem
 setAes	ioctl.rb	/^	def setAes(key)$/;"	f	class:LazGem
+setMyAddress	ioctl.rb	/^	def setMyAddress(addr)$/;"	f	class:LazGem
+setPromiscuous	ioctl.rb	/^	def setPromiscuous(on)$/;"	f	class:LazGem
 setSendMode	ioctl.rb	/^	def setSendMode(param)$/;"	f	class:LazGem
 setTxRetry	ioctl.rb	/^	def setTxRetry(cycle)$/;"	f	class:LazGem
 set_addr_size	ioctl.rb	/^	def set_addr_size(size)$/;"	f	class:LazGem
@@ -65,10 +68,6 @@ set_dst_addr1	ioctl.rb	/^	def set_dst_addr1(addr)$/;"	f	class:LazGem
 set_dst_addr2	ioctl.rb	/^	def set_dst_addr2(addr)$/;"	f	class:LazGem
 set_dst_addr3	ioctl.rb	/^	def set_dst_addr3(addr)$/;"	f	class:LazGem
 set_dst_panid	ioctl.rb	/^	def set_dst_panid(panid)$/;"	f	class:LazGem
-set_my_addr0	ioctl.rb	/^	def set_my_addr0(addr)$/;"	f	class:LazGem
-set_my_addr1	ioctl.rb	/^	def set_my_addr1(addr)$/;"	f	class:LazGem
-set_my_addr2	ioctl.rb	/^	def set_my_addr2(addr)$/;"	f	class:LazGem
-set_my_addr3	ioctl.rb	/^	def set_my_addr3(addr)$/;"	f	class:LazGem
 set_my_panid	ioctl.rb	/^	def set_my_panid(panid)$/;"	f	class:LazGem
 set_pwr	ioctl.rb	/^	def set_pwr(pwr)$/;"	f	class:LazGem
 set_sense_time	ioctl.rb	/^	def set_sense_time(sense_time)$/;"	f	class:LazGem

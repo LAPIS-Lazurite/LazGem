@@ -3,7 +3,7 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require 'LazGem'
+require_relative '../lib/LazGem'
 
 laz = LazGem::Device.new
 
@@ -13,15 +13,7 @@ Signal.trap(:INT){
 	finish_flag=1
 }
 
-if ARGV.size == 0
-	printf("please input argument of ch at least\n")
-	printf("command format is shown below...\n")
-	printf("./sample_rx.rb ch panid baud pwr\n")
-	exit 0
-end
-
-# open device deriver
-laz.init()
+laz.init(module_test=0x4000)
 
 dst_addr = 0xffff
 ch = 36
@@ -45,27 +37,26 @@ end
 print(sprintf("myAddress=0x%016x\n",laz.getMyAddr64()))
 print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
 print(sprintf("ch=%d, panid = %04x, baud= %d, pwr=%d\n",ch,panid,baud,pwr))
+laz.setMyAddress(0x0000)
 laz.begin(ch,panid,baud,pwr)
-laz.setPromiscuous(true)
-laz.rxEnable()
-
-# printing header of receiving log
-print(sprintf("time\t\t\t\t\t[ns]\trxPanid\trxAddr\ttxAddr\trssi\tpayload\n"))
-print(sprintf("------------------------------------------------------------------------------------------\n"))
-
-# main routine
-while finish_flag == 0 do
-	if laz.available() <= 0
-		next
-	end
-	rcv = laz.read()
-	# printing data
-	p rcv
+laz.getMyAddress()
+laz.close()
+laz.setMyAddress(0xFFFE)
+laz.begin(ch,panid,baud,pwr)
+laz.getMyAddress()
+laz.close()
+begin
+	laz.setMyAddress(0xFFFF)
+	laz.begin(ch,panid,baud,pwr)
+	laz.getMyAddress()
+	laz.close()
+rescue => e
+	p e
 end
-laz.rxDisable()
-laz.setPromiscuous(false)
+laz.setAckReq(true)
+sleep(1)
+laz.setAckReq(false)
 
-# finishing process
 laz.remove()
 
 

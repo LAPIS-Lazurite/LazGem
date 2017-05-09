@@ -4,7 +4,7 @@
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
 #require 'LazGem'
-require_relative '../lib/LazGem'
+require 'LazGem'
 
 laz = LazGem::Device.new
 
@@ -21,7 +21,7 @@ if ARGV.size == 0
 end
 
 # open device deriver
-laz.init(module_test=0x0000)
+laz.init()
 
 dst_short_addr = 0x6670
 ch = 36

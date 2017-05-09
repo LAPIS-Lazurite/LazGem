@@ -3,7 +3,7 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require_relative '../lib/LazGem'
+require 'LazGem'
 
 laz = LazGem::Device.new
 
@@ -41,7 +41,7 @@ if ARGV.size > 3
 	pwr = Integer(ARGV[3])
 end
 
-laz.init(module_test=0x7000)
+laz.init()
 
 print(sprintf("myAddress=0x%016x\n",laz.getMyAddr64()))
 print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
