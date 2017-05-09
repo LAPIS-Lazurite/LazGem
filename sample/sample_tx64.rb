@@ -13,8 +13,8 @@ finish_flag=0
 Signal.trap(:INT){
 	finish_flag=1
 }
-if ARGV.size < 3
-	printf("please input argument of ch at least 3\n")
+if ARGV.size < 1
+	printf("please input argument of ch at least 1\n")
 	printf("command format is shown below...\n")
 	printf("./sample_tx.rb ch panid ieee_addr baud pwr\n")
 	exit 0
