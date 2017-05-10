@@ -56,6 +56,8 @@ end
 laz.setAckReq(true)
 sleep(1)
 laz.setAckReq(false)
+laz.setBroadcastEnb(false)
+laz.setBroadcastEnb(true)
 
 laz.remove()
 

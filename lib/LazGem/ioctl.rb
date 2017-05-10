@@ -60,6 +60,7 @@ class LazGem::Device
 	IOCTL_GET_TX_RSSI=		IOCTL_PARAM+0x34
 	IOCTL_SET_PROMISCUOUS=	IOCTL_PARAM+0x35
 	IOCTL_SET_ACK_REQ=		IOCTL_PARAM+0x37
+	IOCTL_SET_BROADCAST=	IOCTL_PARAM+0x39
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF+0x0000
 	IOCTL_RF_WRITE=		IOCTL_RF+0x8000
@@ -110,6 +111,9 @@ class LazGem::Device
 	end
 	def setAckReq(on)
 		ret = @@device_wr.ioctl(IOCTL_SET_ACK_REQ,on)
+	end
+	def setBroadcastEnb(on)
+		ret = @@device_wr.ioctl(IOCTL_SET_BROADCAST,on)
 	end
 	def close()
 		data = 0
