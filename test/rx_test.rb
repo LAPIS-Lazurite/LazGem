@@ -25,11 +25,23 @@ Signal.trap(:INT){
 #  pwr:		tx power  1 or 20
 #  mode:	must be 2
 #key = [0x2b,0x7e,0x15,0x16,0x28,0xae,0xd2,0xa6,0xab,0xf7,0x15,0x88,0x09,0xcf,0x4f,0x3c]
-key = "2b7e151628aed2a6abf7158809cf4f3c"
+laz.init(module_test = 0x4000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
-laz.init()
-laz.setAes(key)
-laz.begin(42,0xABCD,100,20)
+printf("Input channel number(24-60:default:36):")
+ch = gets()
+if ch == "\n" then
+    ch = 36
+end
+
+printf("Choose either to enable or disable AES [y|n]:")
+res = gets()
+case res
+when /^[yY]/
+    key = "2b7e151628aed2a6abf7158809cf4f3c"
+    laz.setAes(key)
+end
+
+laz.begin(ch,0xABCD,100,20)
 print(sprintf("myAddress=0x%04x\n",laz.getMyAddress()))
 laz.rxEnable()
 
