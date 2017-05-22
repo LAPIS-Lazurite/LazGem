@@ -44,6 +44,8 @@ printf("Input channel number(24-60:default:36):")
 ch = gets()
 if ch == "\n" then
     ch = 36
+else
+    ch = ch.to_i
 end
 printf("Input sleep sec time(default:0.5):")
 tim = gets()
@@ -54,9 +56,17 @@ printf("Choose either to enable or disable AES [y|n]:")
 res = gets()
 case res
 when /^[yY]/
-    key = "2b7e151628aed2a6abf7158809cf4f3c"
+    printf("Is it same Key ? [y|n]:")
+    key = gets()
+    if key == "y\n"
+        key = "2b7e151628aed2a6abf7158809cf4f3c"
+    else
+        key = "2b7e151628aed2a6abf7158809cf4f30"
+    end
+    printf("key: %s\n",key)
     laz.setAes(key)
 end
+
 printf("Choose sending type 1:unicast, 2:broadcast:")
 type = gets().to_i
 case type
