@@ -61,6 +61,11 @@ class LazGem::Device
 	IOCTL_SET_PROMISCUOUS=	IOCTL_PARAM+0x35
 	IOCTL_SET_ACK_REQ=		IOCTL_PARAM+0x37
 	IOCTL_SET_BROADCAST=	IOCTL_PARAM+0x39
+	IOCTL_SET_EACK_DATA=	IOCTL_PARAM+0x3B
+	IOCTL_SET_EACK_LEN=		IOCTL_PARAM+0x3D
+	IOCTL_SET_EACK_ENB=		IOCTL_PARAM+0x3F
+	IOCTL_GET_EACK=			IOCTL_PARAM+0x40
+	IOCTL_SET_ACK_INTERVAL=	IOCTL_PARAM+0x43
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF+0x0000
 	IOCTL_RF_WRITE=		IOCTL_RF+0x8000
@@ -114,6 +119,22 @@ class LazGem::Device
 	end
 	def setBroadcastEnb(on)
 		ret = @@device_wr.ioctl(IOCTL_SET_BROADCAST,on)
+	end
+	def setEnhanceAck(data)
+		ret = @@device_wr.ioctl(IOCTL_SET_EACK_ENB,0)
+		ret = @@device_wr.ioctl(IOCTL_SET_EACK_LEN,data.length)
+		bindata = data.pack("C*")
+		ret = @@device_wr.ioctl(IOCTL_SET_EACK_DATA,bindata)
+		ret = @@device_wr.ioctl(IOCTL_SET_EACK_ENB,1)
+	end
+	def getEnhanceAck()
+		data = Array.new(32,0)
+		bindata = data.pack("C*")
+		size = @@device_wr.ioctl(IOCTL_GET_EACK,bindata)
+		ret = bindata.unpack("C"+size.to_s)
+	end
+	def setAckTxInterval(interval)
+		size = @@device_wr.ioctl(IOCTL_SET_ACK_INTERVAL,interval)
 	end
 	def close()
 		data = 0
