@@ -17,13 +17,18 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./sample_tx.rb ch panid dst_short_addr baud pwr\n")
+	printf("  ch:    24-61\n")
+	printf("  panid: 0-0xffff\n")
+	printf("  dst..: distination address\n")
+	printf("  baud:  50 or 100\n")
+	printf("  pwr:   1 or 20\n")
 	exit 0
 end
 
 # open device deriver
 laz.init()
 
-dst_short_addr = 0x6670
+dst_short_addr = 0x444a
 ch = 36
 panid = 0xabcd
 baud = 100

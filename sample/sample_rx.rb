@@ -17,6 +17,10 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./sample_rx.rb ch panid baud pwr\n")
+	printf("  ch:    24-61\n")
+	printf("  panid: 0-0xffff\n")
+	printf("  baud:  50 or 100\n")
+	printf("  pwr:   1 or 20\n")
 	exit 0
 end
 
@@ -56,6 +60,7 @@ print(sprintf("-----------------------------------------------------------------
 # main routine
 while finish_flag == 0 do
 	if laz.available() <= 0
+		sleep 0.01
 		next
 	end
 	rcv = laz.read()

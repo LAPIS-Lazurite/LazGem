@@ -17,6 +17,11 @@ if ARGV.size < 1
 	printf("please input argument of ch at least 1\n")
 	printf("command format is shown below...\n")
 	printf("./sample_tx.rb ch panid ieee_addr baud pwr\n")
+	printf("  ch:    24-61\n")
+	printf("  panid: 0-0xffff\n")
+	printf("  ieee..:0x001d....\n")
+	printf("  baud:  50 or 100\n")
+	printf("  pwr:   1 or 20\n")
 	exit 0
 end
 
