@@ -61,6 +61,8 @@ class LazGem::Device
 	IOCTL_SET_PROMISCUOUS=	IOCTL_PARAM+0x35
 	IOCTL_SET_ACK_REQ=		IOCTL_PARAM+0x37
 	IOCTL_SET_BROADCAST=	IOCTL_PARAM+0x39
+	IOCTL_SET_DSSS_MODE=	IOCTL_PARAM+0x3B
+	IOCTL_SET_DSSS_SIZE=	IOCTL_PARAM+0x3D
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF+0x0000
 	IOCTL_RF_WRITE=		IOCTL_RF+0x8000
@@ -114,6 +116,12 @@ class LazGem::Device
 	end
 	def setBroadcastEnb(on)
 		ret = @@device_wr.ioctl(IOCTL_SET_BROADCAST,on)
+	end
+	def setDsssMode(on)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_MODE,on)
+	end
+	def setDsssSize(size)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SIZE,size)
 	end
 	def close()
 		data = 0
