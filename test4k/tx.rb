@@ -15,37 +15,34 @@ Signal.trap(:INT){
 }
 
 # open device deriver
-laz.init()
-#laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
+#laz.init()
+laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
 ch = 24
 panid = 0xffff
 addr = 0xffff
 baud = 100
 pwr = 20
-#payload = "LAPIS Lazurite RF system"
-payload = "LazuriteLazurite"
-
-laz.setDsssMode(0)
-laz.setDsssSize(27)
 
 # main routine
 while finish_flag == 0 do
-	begin
+#	begin
 	laz.begin(ch,0xabcd,baud,pwr)
-	rescue Exception => e
-		p "file io error!! reset driver"
-		laz.remove()
-		laz.init()
-	end
-	begin
-		laz.send(panid,addr,payload)
-	rescue Exception => e
-		p e
-		sleep 1
-	end
+#	rescue Exception => e
+#		p "file io error!! reset driver"
+#		laz.remove()
+#		laz.init()
+#	end
+#	begin
+	#	laz.send(panid,addr,"LAPIS Lazurite RF system")
+	sleep(0.3)
+		laz.send(0xffff,0xffff,"LAPIS Lazurite RF system")
+#	rescue Exception => e
+#		p e
+#		sleep 1
+#	end
 	laz.close()
-	sleep 1.000
+	sleep(0.3)
 end
 
 # finishing process
