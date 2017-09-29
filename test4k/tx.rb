@@ -24,7 +24,7 @@ end
 #laz.init()
 laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
-ch = 24
+ch = 36
 panid = 0xffff
 dst_addr = 0xffff
 baud = 100

@@ -24,34 +24,20 @@ addr = 0x1234
 baud = 200
 pwr = 20
 #payload = "LAPIS Lazurite RF system"
-#payload = "LazuriteLazurite"
-payload = "Welcome to Lazurite Sub-GHz"
+payload = "LazuriteLazurite"
 
 laz.setDsssMode(1)
 laz.setDsssSize(27)
 
-# main routine
-while finish_flag == 0 do
-#	begin
-	laz.begin(ch,0xabcd,baud,pwr)
-#	rescue Exception => e
-#		p e
-#		p "file io error!! reset driver"
-#		laz.remove()
-#		laz.init()
-#	end
-# 	begin
-    sleep(0.3)
-	laz.send(panid,addr,payload)
-# 	rescue Exception => e
-#		p e
-#		sleep 1
-#	end
-#   sleep(0.3)
-	laz.close()
-    sleep(0.3)
-#	sleep 1.000
-end
+laz.begin(ch,0xabcd,baud,pwr)
+sleep 0.5
+laz.rf_reg_write(0x0b,0x09)
+sleep 0.5
+data = laz.rf_reg_read(0x0b)
+printf("ED_VALUE: %x\n",data);
+sleep 1
+laz.close()
+sleep 1
 
 # finishing process
 laz.remove()

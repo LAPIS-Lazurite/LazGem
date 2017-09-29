@@ -14,7 +14,7 @@ Signal.trap(:INT){
 	finish_flag=1
 }
 
-ch = 24
+ch = 40
 dst_addr = 0xffff
 panid = 0xabcd
 baud = 200
