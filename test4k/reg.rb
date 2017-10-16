@@ -14,26 +14,60 @@ Signal.trap(:INT){
 	finish_flag=1
 }
 
+if ARGV.size == 0
+	printf("please input argument of ch at least\n")
+	printf("command format is shown below...\n")
+	printf("./sample_tx.rb ch panid dst_short_addr baud pwr\n")
+	printf("ex: ./rx.rb 24 0xabcd 0x1234 100 20 0\n")
+	exit 0
+end
+
+ch = 24
+panid = 0xabcd
+dst_addr = 0xffff
+baud = 100
+pwr = 20
+mod = 0
+
+if ARGV.size > 0
+	ch=Integer(ARGV[0])
+end
+if ARGV.size > 1
+	panid = Integer(ARGV[1])
+end
+if ARGV.size > 2
+	dst_addr = Integer(ARGV[2])
+end
+if ARGV.size > 3
+#   baud = Integer(ARGV[3])
+    baud = ARGV[3].to_i
+end
+if ARGV.size > 4
+#   pwr = Integer(ARGV[4])
+    pwr = ARGV[4].to_i
+end
+if ARGV.size > 5
+#	mod = Integer(ARGV[5])
+    mod = ARGV[5]
+end
+
 # open device deriver
 #laz.init()
 laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
-ch = 24
-panid = 0xabcd
-addr = 0x1234
-baud = 100
-pwr = 20
 #payload = "LAPIS Lazurite RF system"
 payload = "LazuriteLazurite"
 
-laz.setDsssMode(0)
-laz.setDsssSize(0)
+if mod == "1" then
+    laz.setDsssMode(1)
+    laz.setDsssSize(27)
+end
 
 laz.begin(ch,panid,baud,pwr)
 
 while 1
     print("Input command(ex: w,0x0b,0x09):")
-    com = gets().split(",")
+    com = STDIN.gets().split(",")
 
     if com[0] == "r" then
         p com[0]
@@ -52,7 +86,6 @@ while 1
     end
 end
 
-sleep 1
-
 # finishing process
 laz.remove()
+
