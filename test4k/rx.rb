@@ -55,7 +55,7 @@ end
 #laz.init()
 laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
-printf("ch%d,panid%x,addr%x,baud%d,pwr%d,mode%d\n",ch,panid,addr,baud,pwr,mod)
+printf("ch:%d,panid:%x,addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,addr,baud,pwr,mod)
 
 if mod == "1" then
     laz.setDsssMode(1)
