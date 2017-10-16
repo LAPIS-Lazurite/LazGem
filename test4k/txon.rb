@@ -18,7 +18,7 @@ Signal.trap(:INT){
 #laz.init()
 laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
-ch = 24
+ch = 36
 panid = 0xabcd
 addr = 0x1234
 baud = 100
@@ -29,30 +29,26 @@ payload = "LazuriteLazurite"
 laz.setDsssMode(0)
 laz.setDsssSize(0)
 
-laz.begin(ch,panid,baud,pwr)
-
 while 1
-    print("Input command(ex: w,0x0b,0x09):")
-    com = gets().split(",")
+    print("Input channel number(24- 60):")
+    ch = gets().to_i
+    laz.begin(ch,0xabcd,baud,pwr)
 
-    if com[0] == "r" then
-        p com[0]
-        p com[1].chomp
+    print("Request TX_ON:")
+    gets()
+    laz.rf_reg_write(0x0b,0x09)
+    sleep 1
 
-        data = laz.rf_reg_read(com[1].chomp.to_i(16))
-        printf("read data: %x\n",data)
-    elsif com[0] == "w" then
-        p com[0]
-        p com[1].chomp
-        p com[2].chomp
+    data = laz.rf_reg_read(0x0b)
+    printf("read data: %x\n",data)
 
-        laz.rf_reg_write(com[1].chomp.to_i(16),com[2].chomp.to_i(16))
-    else
-        break
-    end
+    print("Request TRX_OFF:")
+    gets()
+    laz.rf_reg_write(0x0b,0x08)
+    laz.close()
+    sleep 1
 end
 
-sleep 1
 
 # finishing process
 laz.remove()
