@@ -48,17 +48,17 @@ if ARGV.size > 4
     pwr = ARGV[4].to_i
 end
 if ARGV.size > 5
-#	mod = Integer(ARGV[5])
-    mod = ARGV[5]
+ 	mod = Integer(ARGV[5])
+#   mod = ARGV[5]
 end
 
-#laz.init()
-laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
+laz.init()
+#laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
 printf("ch:%d,panid:%x,addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,addr,baud,pwr,mod)
 
-if mod == "1" then
-    laz.setDsssMode(1)
+if mod != 0 then
+    laz.setDsssMode(mod)
     laz.setDsssSize(27)
 end
 
