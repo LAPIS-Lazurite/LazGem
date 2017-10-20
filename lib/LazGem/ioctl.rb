@@ -72,9 +72,9 @@ class LazGem::Device
 
 ###			API
 	def begin(ch,panid,bps,pwr)
+		set_bps(bps)
 		set_ch(ch)
 		set_my_panid(panid)
-		set_bps(bps)
 		set_pwr(pwr)
 		return set_begin()
 	end
