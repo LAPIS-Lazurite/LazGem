@@ -18,7 +18,7 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./sample_tx.rb ch panid dst_short_addr baud pwr\n")
-	printf("ex: ./rx.rb 24 0xabcd 0x1234 100 20 0\n")
+	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x13\n")
 	exit 0
 end
 
@@ -74,7 +74,7 @@ while 1
         p com[1].chomp
 
         data = laz.rf_reg_read(com[1].chomp.to_i(16))
-        printf("read data: %x\n",data)
+        printf("read data: 0x%x\n",data)
     elsif com[0] == "w" then
         p com[0]
         p com[1].chomp

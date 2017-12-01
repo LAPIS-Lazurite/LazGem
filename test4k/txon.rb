@@ -17,7 +17,7 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./sample_tx.rb ch panid dst_short_addr baud pwr\n")
-	printf("ex: ./rx.rb 24 0xabcd 0x1234 100 20 0\n")
+	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x13\n")
 	exit 0
 end
 

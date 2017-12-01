@@ -18,7 +18,7 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./rx.rb ch panid addr baud pwr mod\n")
-	printf("ex: ./rx.rb 24 0xabcd 0x1234 100 20 0\n")
+	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x13\n")
 	exit 0
 end
 
@@ -52,8 +52,8 @@ if ARGV.size > 5
 #   mod = ARGV[5]
 end
 
-laz.init()
-#laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
+#laz.init()
+laz.init(module_test = 0x1000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
 printf("ch:%d,panid:%x,addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,addr,baud,pwr,mod)
 
