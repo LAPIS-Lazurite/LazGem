@@ -58,7 +58,7 @@ printf("ch:%d,panid:%x,dst_addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,dst_addr,b
 
 if mod != 0 then
     laz.setDsssMode(mod)
-    laz.setDsssSize(27)
+    laz.setDsssSize(16)
     payload = "LazuriteLazurite"
 else
 #   payload = "LAPIS Lazurite RF system"
@@ -91,7 +91,7 @@ while finish_flag == 0 do
 		sleep 1
 	end
 	laz.close()
-	sleep(0.3)
+	sleep(1.3)
 end
 
 # finishing process
