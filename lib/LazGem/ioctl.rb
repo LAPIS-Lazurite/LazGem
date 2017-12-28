@@ -117,8 +117,8 @@ class LazGem::Device
 	def setBroadcastEnb(on)
 		ret = @@device_wr.ioctl(IOCTL_SET_BROADCAST,on)
 	end
-	def setDsssMode(on)
-		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_MODE,on)
+	def setDsssMode(mode)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_MODE,mode)
 	end
 	def setDsssSize(size)
 		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SIZE,size)
