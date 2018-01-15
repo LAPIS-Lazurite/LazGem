@@ -57,8 +57,9 @@ laz.init()
 printf("ch:%d,panid:%x,dst_addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,dst_addr,baud,pwr,mod)
 
 if mod != 0 then
-    laz.setDsssMode(mod)
-    laz.setDsssSize(16)
+    laz.setModulation(mod)
+    laz.setDsssSize(16,0)
+    laz.setDsssSpreadFactor(64)
     payload = "LazuriteLazurite"
 else
 #   payload = "LAPIS Lazurite RF system"

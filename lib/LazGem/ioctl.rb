@@ -62,7 +62,8 @@ class LazGem::Device
 	IOCTL_SET_ACK_REQ=		IOCTL_PARAM+0x37
 	IOCTL_SET_BROADCAST=	IOCTL_PARAM+0x39
 	IOCTL_SET_DSSS_MODE=	IOCTL_PARAM+0x3B
-	IOCTL_SET_DSSS_SIZE=	IOCTL_PARAM+0x3D
+	IOCTL_SET_DSSS_SF=	    IOCTL_PARAM+0x3D
+	IOCTL_SET_DSSS_SIZE=	IOCTL_PARAM+0x3F
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF+0x0000
 	IOCTL_RF_WRITE=		IOCTL_RF+0x0080
@@ -117,10 +118,13 @@ class LazGem::Device
 	def setBroadcastEnb(on)
 		ret = @@device_wr.ioctl(IOCTL_SET_BROADCAST,on)
 	end
-	def setDsssMode(mode)
+	def setModulation(mode)
 		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_MODE,mode)
 	end
-	def setDsssSize(size)
+	def setDsssSpreadFactor(sf)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SF,sf)
+	end
+	def setDsssSize(size,addrmode)
 		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SIZE,size)
 	end
 	def close()

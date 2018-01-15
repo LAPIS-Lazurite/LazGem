@@ -59,8 +59,9 @@ laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 payload = "LazuriteLazurite"
 
 if mod != 0 then
-    laz.setDsssMode(mod)
-    laz.setDsssSize(27)
+    laz.setModulation(mod)
+    laz.setDsssSize(16,0)
+    laz.setDsssSpreadFactor(64)
 end
 
 laz.begin(ch,panid,baud,pwr)

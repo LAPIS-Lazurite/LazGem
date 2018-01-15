@@ -62,8 +62,9 @@ laz.init(module_test = 0x3000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
 printf("ch:%d,panid:%x,addr:%x,baud:%d,pwr:%d,mode:%d,len:%d\n",ch,panid,addr,baud,pwr,mod,len)
 
 if mod != 0 then
-    laz.setDsssMode(mod)
-    laz.setDsssSize(len)
+    laz.setModulation(mod)
+    laz.setDsssSize(len,0)
+    laz.setDsssSpreadFactor(64)
 end
 
 if addr == 0xffff
