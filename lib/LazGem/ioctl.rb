@@ -125,7 +125,8 @@ class LazGem::Device
 		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SF,sf)
 	end
 	def setDsssSize(size,addrmode)
-		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SIZE,size)
+        size_mode = (size << 8 | addrmode)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SIZE,size_mode)
 	end
 	def close()
 		data = 0
