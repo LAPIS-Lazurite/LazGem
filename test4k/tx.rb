@@ -17,7 +17,7 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./sample_tx.rb ch panid dst_short_addr baud pwr\n")
-	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x13\n")
+	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x10\n")
 	exit 0
 end
 
@@ -50,9 +50,9 @@ if ARGV.size > 5
 end
 
 # open device deriver
-laz.init()
+#laz.init()
 # Notes: MACH and MACL on can't broadcast.
-#laz.init(module_test = 0x1000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
+laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
 
 printf("ch:%d,panid:%x,dst_addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,dst_addr,baud,pwr,mod)
 
@@ -63,15 +63,15 @@ if mod != 0 then
     payload = "LazuriteLazurite"
 else
 #   payload = "LAPIS Lazurite RF system"
-#   payload = "Welcome to Lazurite Sub-GHz"
-    payload = "\
-0123456789ABCDEF0123456789ABCDEF\
-0123456789ABCDEF0123456789ABCDEF\
-0123456789ABCDEF0123456789ABCDEF\
-0123456789ABCDEF0123456789ABCDEF\
-0123456789ABCDEF0123456789ABCDEF\
-0123456789ABCDEF0123456789ABCDEF\
-0123456789ABCDEF"
+    payload = "Welcome to Lazurite Sub-GHz"
+#   payload = "\
+#0123456789ABCDEF0123456789ABCDEF\
+#0123456789ABCDEF0123456789ABCDEF\
+#0123456789ABCDEF0123456789ABCDEF\
+#0123456789ABCDEF0123456789ABCDEF\
+#0123456789ABCDEF0123456789ABCDEF\
+#0123456789ABCDEF0123456789ABCDEF\
+#0123456789ABCDEF"
 end
 
 

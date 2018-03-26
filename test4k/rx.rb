@@ -18,7 +18,7 @@ if ARGV.size == 0
 	printf("please input argument of ch at least\n")
 	printf("command format is shown below...\n")
 	printf("./rx.rb ch panid addr baud pwr mod\n")
-	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x13 27\n")
+	printf("ex: ./rx.rb 24 0xabcd 0x1234 200 20 0x10 16\n")
 	exit 0
 end
 
@@ -28,8 +28,8 @@ addr = 0xffff
 panid = 0xabcd
 baud = 100
 pwr = 20
-mod = 0
-len = 27
+mod = 0x10
+len = 16
 
 if ARGV.size > 0
 	ch=Integer(ARGV[0])
@@ -57,14 +57,14 @@ if ARGV.size > 6
 end
 
 #laz.init()
-laz.init(module_test = 0x3000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
+laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
 
 printf("ch:%d,panid:%x,addr:%x,baud:%d,pwr:%d,mode:%d,len:%d\n",ch,panid,addr,baud,pwr,mod,len)
 
 if mod != 0 then
     laz.setModulation(mod)
     laz.setDsssSize(len,0)
-    laz.setDsssSpreadFactor(64)
+#   laz.setDsssSpreadFactor(64)
 end
 
 if addr == 0xffff
