@@ -328,7 +328,7 @@ class LazGem::Device
 			offset = offset+8
 		end
 
-		payload = raw[offset..len-1].unpack("Z*")[0]
+		payload = raw[offset..len-1]
 
 		rcv = Hash.new()
 

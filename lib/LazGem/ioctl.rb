@@ -188,7 +188,7 @@ class LazGem::Device
 		ret = @@device_wr.ioctl(IOCTL_SET_SEND_MODE,data)
 		return ret
 	end
-	def setAes(key)
+	def setKey(key)
 		ret = @@device_wr.ioctl(IOCTL_SET_AES,key)
 		return ret
 	end
