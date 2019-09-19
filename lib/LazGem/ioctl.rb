@@ -262,8 +262,14 @@ class LazGem::Device
 		return ret
 	end
 	def set_dst_panid(panid)
-		ret = @@device_wr.ioctl(IOCTL_SET_DST_PANID,panid)
-		return ret
+#		ret = @@device_wr.ioctl(IOCTL_SET_DST_PANID,panid)
+#		return ret
+        begin
+		  @@device_wr.ioctl(IOCTL_SET_DST_PANID,panid)
+        rescue Exception => e
+          p e
+        end
+		return 0
 	end
 	def get_my_addr0()
 		addr = 0;
@@ -291,8 +297,14 @@ class LazGem::Device
 		return ret
 	end
 	def set_dst_addr0(addr)
-		ret = @@device_wr.ioctl(IOCTL_SET_DST_ADDR0,addr)
-		return ret
+#		ret = @@device_wr.ioctl(IOCTL_SET_DST_ADDR0,addr)
+#		return ret
+        begin 
+		  @@device_wr.ioctl(IOCTL_SET_DST_ADDR0,addr)
+        rescue Exception => e
+          p e
+        end
+		return 0
 	end
 	def get_dst_addr1()
 		addr = 0;
@@ -411,7 +423,7 @@ class LazGem::Device
 		end
 	end
 	def rf_reg_write(addr,data)
-		if addr >= 0 || ch <= 0xff || data >= 0 || data <= 0xff then
+		if addr >= 0 || addr <= 0xff || data >= 0 || data <= 0xff then
 			ret = @@device_wr.ioctl(IOCTL_RF_WRITE+addr ,data)
 			return ret
 		end

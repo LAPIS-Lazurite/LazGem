@@ -367,7 +367,11 @@ class LazGem::Device
 	def send(panid,addr,payload)
 		set_dst_panid(panid)
 		set_dst_addr0(addr)
-		@@device_wr.write(payload)
+        begin
+		  @@device_wr.write(payload)
+        rescue Exception => e
+          p e
+        end
 		sleep 0.001
 	end
 end
