@@ -3,8 +3,8 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
+require_relative '../lib/LazGem'
 #require 'LazGem'
-require 'LazGem'
 require 'logger'
 require 'fileutils'
 
@@ -27,7 +27,10 @@ if ARGV.size == 0
 	exit 0
 end
 
+#key = [0x2b,0x7e,0x15,0x16,0x28,0xae,0xd2,0xa6,0xab,0xf7,0x15,0x88,0x09,0xcf,0x4f,0x3c]
+#
 # open device deriver
+#laz.init(module_test = 0x4000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 #laz.init(0x6000)
 laz.init()
 
@@ -36,6 +39,7 @@ ch = 36
 panid = 0xabcd
 baud = 100
 pwr = 20
+tim = 0
 
 if ARGV.size > 0
 	ch=Integer(ARGV[0])
@@ -55,12 +59,14 @@ end
 
 t = Time.now
 date = sprintf("%04d%02d%02d%02d%02d",t.year,t.mon,t.mday,t.hour,t.min)
-logfilename = "log/" + date + "_sample_trx.log"
+logfilename = "log/" + date + "_aes_trx.log"
 log = Logger.new(logfilename)
 
-i = 0
-# main routine
+#key = "2b7e151628aed2a6abf7158809cf4f3c"
+key = "2b7e151628aed2a6abf7158809cf4f30"
+laz.setKey(key)
 
+# main routine
 begin
   laz.begin(ch,panid,baud,pwr)
   laz.rxEnable()
@@ -70,17 +76,28 @@ rescue Exception => e
    laz.init()
 end
 
+display=0
 while finish_flag == 0 do
 	begin
-		msg = laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
-#       rcv = laz.read()
-#       p rcv
+		if laz.available() > 0
+			rcv = laz.read()
+			#p rcv
+			print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d %s\n",Time.at(rcv["sec"]),rcv["nsec"],rcv["rssi"],rcv["payload"]));
+#		else
+			msg = laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
+		end
+		if (display > 10000)
+			p "AES testing"
+			display=0
+		else
+			display+=1
+		end
 	rescue Exception => e
 		p e
     log.info(sprintf("%s",e))
 		sleep 1
 	end
-  sleep 0.025
+  sleep(tim)
 end
 
 laz.close()

@@ -55,11 +55,16 @@ end
 
 t = Time.now
 date = sprintf("%04d%02d%02d%02d%02d",t.year,t.mon,t.mday,t.hour,t.min)
-logfilename = "log/" + date + "_sample_trx.log"
+logfilename = "log/" + date + "_aes_trx.log"
 log = Logger.new(logfilename)
 
 i = 0
 # main routine
+
+
+#key = "2b7e151628aed2a6abf7158809cf4f3c"
+key = "2b7e151628aed2a6abf7158809cf4f30"
+laz.setKey(key)
 
 begin
   laz.begin(ch,panid,baud,pwr)
@@ -80,8 +85,8 @@ while finish_flag == 0 do
     log.info(sprintf("%s",e))
 		sleep 1
 	end
-  sleep 0.025
+#  sleep 0.025
 end
 
-laz.close()
-laz.remove()
+#laz.close()
+#laz.remove()
