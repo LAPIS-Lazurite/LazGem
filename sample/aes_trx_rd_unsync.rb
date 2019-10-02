@@ -92,5 +92,5 @@ while finish_flag == 0 do
 #  sleep 0.025
 end
 
-#laz.close()
-#laz.remove()
+laz.close()
+laz.remove()

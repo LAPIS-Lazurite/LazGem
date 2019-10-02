@@ -68,7 +68,7 @@ laz.setKey(key)
 
 begin
   laz.begin(ch,panid,baud,pwr)
-  laz.rxEnable()
+# laz.rxEnable()
 rescue Exception => e
    p "file io error!! reset driver"
    laz.remove()
