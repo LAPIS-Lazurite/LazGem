@@ -67,8 +67,8 @@ class LazGem::Device
 	IOCTL_GET_EACK=			IOCTL_PARAM+0x40
 	IOCTL_SET_ACK_INTERVAL=	IOCTL_PARAM+0x43
 	IOCTL_RF=			0x2000
-	IOCTL_RF_READ=		IOCTL_RF+0x0000
-	IOCTL_RF_WRITE=		IOCTL_RF+0x8000
+	IOCTL_RF_READ=		IOCTL_RF
+	IOCTL_RF_WRITE=		IOCTL_RF
 	IOCTL_EEPROM=		0x3000
 	IOCTL_RX_LED=		0x4000
 	IOCTL_TX_LED=		0x4000
@@ -424,7 +424,7 @@ class LazGem::Device
 	end
 	def rf_reg_write(addr,data)
 		if addr >= 0 || addr <= 0xff || data >= 0 || data <= 0xff then
-			ret = @@device_wr.ioctl(IOCTL_RF_WRITE+addr ,data)
+			ret = @@device_wr.ioctl(IOCTL_RF_WRITE + addr + 0x80, data)
 			return ret
 		end
 	end
