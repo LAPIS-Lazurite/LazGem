@@ -439,7 +439,7 @@ class LazGem::Device
 
 	def rx_led(time)
 		if time >= 0 || time <= 0xffff then
-			ret = @@device_wr.ioctl(IOCTL_RX_LED,time)
+			ret = @@device_wr.ioctl(IOCTL_RX_LED + 0x0800,time)
 			return ret
 		end
 	end
