@@ -78,18 +78,22 @@ end
 while finish_flag == 0 do
 	begin
 		msg = laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
-		if laz.available() > 0
-			rcv = laz.read()
-			print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d %s\n",Time.at(rcv["sec"]),rcv["nsec"],rcv["rssi"],rcv["payload"]));
-		end
-#   rcv = laz.read()
-#   p rcv
 	rescue Exception => e
 		p e
     log.info(sprintf("%s",e))
-		sleep 0.04
 	end
-#  sleep 0.025
+
+	while laz.available() > 0 do
+		begin
+			rcv = laz.read()
+			print(sprintf("rx_time= %s\trx_nsec=%d\trssi=%d %s\n",Time.at(rcv["sec"]),rcv["nsec"],rcv["rssi"],rcv["payload"]));
+#		rcv = laz.read()
+#		p rcv
+		rescue Exception => e
+			p e
+		end
+	end
+	sleep 0.05
 end
 
 laz.close()

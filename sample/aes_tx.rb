@@ -4,7 +4,7 @@
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
 #require 'LazGem'
-require 'LazGem'
+require_relative '../lib/LazGem'
 require 'logger'
 require 'fileutils'
 
@@ -64,9 +64,9 @@ i = 0
 
 #key = "2b7e151628aed2a6abf7158809cf4f3c"
 key = "2b7e151628aed2a6abf7158809cf4f30"
-laz.setKey(key)
 
 begin
+	laz.setKey(key)
   laz.begin(ch,panid,baud,pwr)
 # laz.rxEnable()
 rescue Exception => e
@@ -76,16 +76,41 @@ rescue Exception => e
 end
 
 while finish_flag == 0 do
+	# ------------------ 1) AES enable, unicast
+	laz.close()
+	laz.setKey(key)
+	laz.begin(ch,panid,baud,pwr)
 	begin
-		msg = laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
-#       rcv = laz.read()
-#       p rcv
+		msg = laz.send(panid,dst_short_addr,"1TEST LAPIS Lazurite RF system")
 	rescue Exception => e
 		p e
     log.info(sprintf("%s",e))
-		sleep 1
 	end
-#  sleep 0.025
+	sleep 0.5
+
+	# ------------------ 2) AES enable, broadcast
+	begin
+		bc_addr = 0xffff
+		msg = laz.send(bc_addr,bc_addr,"2TEST LAPIS Lazurite RF system")
+	rescue Exception => e
+		p e
+    log.info(sprintf("%s",e))
+	end
+	sleep 0.5
+
+	# ------------------ 3) AES disable, unicast
+	laz.close()
+	key = "0"
+	laz.setKey(key)
+  laz.begin(ch,panid,baud,pwr)
+	begin
+		msg = laz.send(panid,dst_short_addr,"3TEST LAPIS Lazurite RF system")
+	rescue Exception => e
+		p e
+    log.info(sprintf("%s",e))
+	end
+	sleep 1
+
 end
 
 laz.close()
