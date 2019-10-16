@@ -38,37 +38,29 @@ if ARGV.size > 1
 	panid = Integer(ARGV[1])
 end
 if ARGV.size > 2
-	addr = Integer(ARGV[2])
+#   baud = Integer(ARGV[3])
+    baud = ARGV[2].to_i
 end
 if ARGV.size > 3
-#   baud = Integer(ARGV[3])
-    baud = ARGV[3].to_i
+#   pwr = Integer(ARGV[4])
+    pwr = ARGV[3].to_i
 end
 if ARGV.size > 4
-#   pwr = Integer(ARGV[4])
-    pwr = ARGV[4].to_i
-end
-if ARGV.size > 5
- 	mod = Integer(ARGV[5])
+ 	mod = Integer(ARGV[4])
 #   mod = ARGV[5]
 end
-if ARGV.size > 6
- 	len = Integer(ARGV[6])
+if ARGV.size > 5
+ 	len = Integer(ARGV[5])
 end
 
-#laz.init()
-laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
+laz.init()
+#laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
 
 printf("ch:%d,panid:%x,addr:%x,baud:%d,pwr:%d,mode:%d,len:%d\n",ch,panid,addr,baud,pwr,mod,len)
 
 if mod != 0 then
     laz.setModulation(mod)
     laz.setDsssSize(len,0)
-#   laz.setDsssSpreadFactor(64)
-end
-
-if addr == 0xffff
-    laz.setPromiscuous(true)
 end
 
 print(sprintf("myAddress=0x%016x\n",laz.getMyAddr64()))
@@ -91,10 +83,5 @@ while finish_flag == 0 do
 	p rcv
 end
 
-# finishing process
+laz.close()
 laz.remove()
-if addr == 0xffff
-    laz.setPromiscuous(false)
-end
-
-
