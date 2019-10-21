@@ -20,8 +20,8 @@ class LazGem::Device
 	@@device_wr=nil
 
 	def init(module_test=0x0000)
-		cmd = "sudo insmod /home/pi/driver/LazDriver-master/lazdriver.ko module_test="+module_test.to_s
-#		cmd = "sudo modprove lazdriver.ko"
+		cmd = "sudo insmod /home/pi/driver/LazDriver/lazdriver.ko module_test="+module_test.to_s
+#		cmd = "sudo modprobe lazdriver"
 		p cmd
 		result = system(cmd)
 		lzgw_dev = "/dev/lzgw"
@@ -59,7 +59,8 @@ class LazGem::Device
 		end
 		@@devie_rd = nil
 		@@device_wr = nil
-		cmd = "sudo rmmod lazdriver"
+ 		cmd = "sudo rmmod lazdriver"
+#		cmd = "sudo modprobe -r lazdriver"
 		system(cmd)
 		p cmd
 	end

@@ -66,6 +66,8 @@ class LazGem::Device
 	IOCTL_SET_EACK_ENB=		IOCTL_PARAM+0x3F
 	IOCTL_GET_EACK=			IOCTL_PARAM+0x40
 	IOCTL_SET_ACK_INTERVAL=	IOCTL_PARAM+0x43
+	IOCTL_GET_ED_VALUE=	IOCTL_PARAM+0x44
+	IOCTL_SET_ANT_SWITCH=	IOCTL_PARAM+0x45
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF
 	IOCTL_RF_WRITE=		IOCTL_RF
@@ -135,6 +137,12 @@ class LazGem::Device
 	end
 	def setAckTxInterval(interval)
 		size = @@device_wr.ioctl(IOCTL_SET_ACK_INTERVAL,interval)
+	end
+	def getEdValue()
+		ret = @@device_wr.ioctl(IOCTL_GET_ED_VALUE,0)
+	end
+	def setAntSw(antsw)
+		ret = @@device_wr.ioctl(IOCTL_SET_ANT_SWITCH,andsw)
 	end
 	def close()
 		data = 0

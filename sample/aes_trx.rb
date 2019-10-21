@@ -4,7 +4,7 @@
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
 #require 'LazGem'
-require 'LazGem'
+require_relative '../lib/LazGem'
 require 'logger'
 require 'fileutils'
 
