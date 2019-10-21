@@ -5,6 +5,8 @@
 #   SerialMonitor.rb
 #require 'LazGem'
 require_relative '../lib/LazGem'
+require 'logger'
+require 'timeout'
 
 laz = LazGem::Device.new
 
@@ -13,6 +15,12 @@ finish_flag=0
 Signal.trap(:INT){
 	finish_flag=1
 }
+
+
+t = Time.now
+date = sprintf("%4d%02d%%02d%02d%02d",t.year,t.mon,t.mday,t.hour,t.min)
+logfilename = "log/" + "search_rssi_" + date + ".log"
+$log = Logger.new(logfilename)
 
 laz.init()
 
@@ -24,35 +32,36 @@ line = 0
 
 while finish_flag == 0 do
 
+	str = ""
 	if (line == 0) then
 		for i in 24..60 do
 			if (i == 32) then
 				next
 			end
 			ch = i.to_i
-			printf("%3d|",ch)
+			str << sprintf("%3d|",ch)
 		end
-		printf("\n")
+		printf("%s\n",str)
 		printf("------------------------------------------------------------------------------------------------------------------------------------------------\n")
 	end
 
+	str = ""
 	for i in 24..60 do
+		ch = i.to_i
 		if (i == 32) then
 			next
 		end
-		ch = i.to_i
 		laz.begin(ch,panid,baud,pwr)
 		laz.rxEnable()
 		sleep 0.01
 		val = laz.getEdValue()
 		if (val == 0) then
-			printf("   |")
+			str << sprintf("   |")
 		else
-			printf("%3d|",val)
+			str << sprintf("%3d|",val)
 		end
 	end
-	printf("\n")
-
+	printf("%s\n",str)
 	if (line == 50) then
 		line=0
 	else
