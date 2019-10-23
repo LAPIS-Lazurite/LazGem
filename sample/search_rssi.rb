@@ -57,6 +57,7 @@ while finish_flag == 0 do
 #		laz.rxEnable()
 		sleep 0.01
 		val = laz.getEdValue()
+		laz.close()
 		if (val == 0) then
 			str << sprintf("   |")
 		else
