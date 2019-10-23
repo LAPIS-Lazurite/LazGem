@@ -18,7 +18,7 @@ Signal.trap(:INT){
 
 
 t = Time.now
-date = sprintf("%4d%02d%%02d%02d%02d",t.year,t.mon,t.mday,t.hour,t.min)
+date = sprintf("%4d%02d%02d%02d%02d",t.year,t.mon,t.mday,t.hour,t.min)
 logfilename = "log/" + "search_rssi_" + date + ".log"
 $log = Logger.new(logfilename)
 
@@ -41,7 +41,9 @@ while finish_flag == 0 do
 			ch = i.to_i
 			str << sprintf("%3d|",ch)
 		end
+		$log.info(sprintf("%s",str))
 		printf("%s\n",str)
+		$log.info(sprintf("------------------------------------------------------------------------------------------------------------------------------------------------"))
 		printf("------------------------------------------------------------------------------------------------------------------------------------------------\n")
 	end
 
@@ -52,7 +54,7 @@ while finish_flag == 0 do
 			next
 		end
 		laz.begin(ch,panid,baud,pwr)
-		laz.rxEnable()
+#		laz.rxEnable()
 		sleep 0.01
 		val = laz.getEdValue()
 		if (val == 0) then
@@ -61,6 +63,7 @@ while finish_flag == 0 do
 			str << sprintf("%3d|",val)
 		end
 	end
+	$log.info(sprintf("%s",str))
 	printf("%s\n",str)
 	if (line == 50) then
 		line=0
