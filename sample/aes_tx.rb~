@@ -4,7 +4,7 @@
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
 #require 'LazGem'
-require_relative '../lib/LazGem'
+require 'LazGem'
 require 'logger'
 require 'fileutils'
 
@@ -64,11 +64,11 @@ i = 0
 
 #key = "2b7e151628aed2a6abf7158809cf4f3c"
 key = "2b7e151628aed2a6abf7158809cf4f30"
-laz.setKey(key)
 
 begin
+	laz.setKey(key)
   laz.begin(ch,panid,baud,pwr)
-  laz.rxEnable()
+# laz.rxEnable()
 rescue Exception => e
    p "file io error!! reset driver"
    laz.remove()
@@ -76,16 +76,40 @@ rescue Exception => e
 end
 
 while finish_flag == 0 do
+	laz.close()
+	laz.setKey(key)
+  laz.begin(ch,panid,baud,pwr)
+	# ------------------ 1) AES enable, unicast
 	begin
-		msg = laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
-#       rcv = laz.read()
-#       p rcv
+		msg = laz.send(panid,dst_short_addr,"1TEST LAPIS Lazurite RF system")
 	rescue Exception => e
 		p e
     log.info(sprintf("%s",e))
 		sleep 1
 	end
-#  sleep 0.025
+
+	# ------------------ 2) AES enable, broadcast
+	begin
+		msg = laz.send(0xffff,0xffff,"2TEST LAPIS Lazurite RF system")
+	rescue Exception => e
+		p e
+    log.info(sprintf("%s",e))
+		sleep 1
+	end
+
+	# ------------------ 3) AES disable, unicast
+	laz.close()
+	laz.setKey(nil)
+  laz.begin(ch,panid,baud,pwr)
+	begin
+		msg = laz.send(panid,dst_short_addr,"3TEST LAPIS Lazurite RF system")
+	rescue Exception => e
+		p e
+    log.info(sprintf("%s",e))
+		sleep 1
+	end
+
+  sleep 1
 end
 
 laz.close()

@@ -5,8 +5,7 @@
 #   SerialMonitor.rb
 #require 'LazGem'
 require_relative '../lib/LazGem'
-require 'logger'
-require 'fileutils'
+require 'timeout'
 
 laz = LazGem::Device.new
 
@@ -28,7 +27,6 @@ if ARGV.size == 0
 end
 
 # open device deriver
-#laz.init(0x6000)
 laz.init()
 
 dst_short_addr = 0x444a
@@ -53,14 +51,8 @@ if ARGV.size > 4
 	pwr = Integer(ARGV[4])
 end
 
-t = Time.now
-date = sprintf("%04d%02d%02d%02d%02d",t.year,t.mon,t.mday,t.hour,t.min)
-logfilename = "log/" + date + "_aes_trx.log"
-log = Logger.new(logfilename)
-
 i = 0
 # main routine
-
 
 #key = "2b7e151628aed2a6abf7158809cf4f3c"
 key = "2b7e151628aed2a6abf7158809cf4f30"
@@ -75,18 +67,46 @@ rescue Exception => e
    laz.init()
 end
 
-while finish_flag == 0 do
-	begin
-		msg = laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
-#       rcv = laz.read()
-#       p rcv
-	rescue Exception => e
-		p e
-    log.info(sprintf("%s",e))
-		sleep 1
-	end
-#  sleep 0.025
+        begin
+		  @@device_wr.write(payload)
+        rescue Exception => e
+          p e
+        end
+
+t1 = Thread.new do
+  while finish_flag == 0 do
+    print "send1 --- on\n"
+#   begin
+      laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
+#   rescue
+#     laz.remove()
+#     laz.init()
+#     laz.begin(ch,panid,baud,pwr)
+#     laz.rxEnable()
+#   end
+    print "send1 --- off\n"
+    sleep 1
+  end
 end
+
+t2 = Thread.new do
+  while finish_flag == 0 do
+    print "send2 --- on\n"
+#   begin
+      laz.send(panid,dst_short_addr,"LAPIS Lazurite RF system")
+#   rescue
+#     laz.remove()
+#     laz.init()
+#     laz.begin(ch,panid,baud,pwr)
+#     laz.rxEnable()
+#   end
+    print "send2 --- off\n"
+    sleep 0.8
+  end
+end
+
+t1.join
+t2.join
 
 laz.close()
 laz.remove()

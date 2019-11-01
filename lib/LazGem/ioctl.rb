@@ -66,6 +66,9 @@ class LazGem::Device
 	IOCTL_SET_EACK_ENB=		IOCTL_PARAM+0x3F
 	IOCTL_GET_EACK=			IOCTL_PARAM+0x40
 	IOCTL_SET_ACK_INTERVAL=	IOCTL_PARAM+0x43
+	IOCTL_SET_DSSS_MODE=	IOCTL_PARAM+0x80
+	IOCTL_SET_DSSS_SF=	    IOCTL_PARAM+0x81
+	IOCTL_SET_DSSS_SIZE=	IOCTL_PARAM+0x82
 	IOCTL_RF=			0x2000
 	IOCTL_RF_READ=		IOCTL_RF
 	IOCTL_RF_WRITE=		IOCTL_RF
@@ -414,6 +417,19 @@ class LazGem::Device
 		rssi = @@device_wr.ioctl(IOCTL_GET_TX_RSSI,tmp)
 		return rssi
 	end
+
+
+	def setModulation(mode)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_MODE,mode)
+	end
+	def setDsssSpreadFactor(sf)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SF,sf)
+	end
+	def setDsssSize(size,addrmode)
+		size_mode = (size << 8 | addrmode)
+		ret = @@device_wr.ioctl(IOCTL_SET_DSSS_SIZE,size_mode)
+	end
+
 
 	def rf_reg_read(addr)
 		data = 0;
