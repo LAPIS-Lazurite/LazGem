@@ -44,6 +44,11 @@ if ARGV.size > 3
 #   pwr = Integer(ARGV[4])
     pwr = ARGV[3].to_i
 end
+if ARGV.size > 4
+    mod = Integer(ARGV[4])
+end
+
+printf("ch:%d,panid:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,baud,pwr,mod)
 
 laz.init()
 #laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000

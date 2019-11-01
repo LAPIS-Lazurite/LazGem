@@ -45,6 +45,9 @@ if ARGV.size > 4
 #   pwr = Integer(ARGV[4])
     pwr = ARGV[4].to_i
 end
+if ARGV.size > 5
+		mod = Integer(ARGV[5])
+end
 
 # open device deriver
 laz.init()
