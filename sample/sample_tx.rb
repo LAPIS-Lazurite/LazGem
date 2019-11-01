@@ -26,7 +26,8 @@ if ARGV.size == 0
 end
 
 # open device deriver
-laz.init()
+laz.init(0x1000)
+#laz.init()
 
 dst_short_addr = 0x444a
 ch = 36

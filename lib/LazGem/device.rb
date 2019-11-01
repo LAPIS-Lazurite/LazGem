@@ -21,7 +21,7 @@ class LazGem::Device
 
 	def init(module_test=0x0000)
 #		cmd = "sudo insmod /home/pi/driver/LazDriver/lazdriver.ko module_test="+module_test.to_s
-		cmd = "sudo modprobe lazdriver"
+		cmd = "sudo modprobe lazdriver module_test="+module_test.to_s
 		p cmd
 		result = system(cmd)
 		lzgw_dev = "/dev/lzgw"
