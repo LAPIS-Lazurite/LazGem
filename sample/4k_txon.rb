@@ -23,7 +23,6 @@ end
 
 ch = 24
 panid = 0xabcd
-dst_addr = 0xffff
 baud = 100
 pwr = 20
 mod = 0x10
@@ -35,18 +34,13 @@ if ARGV.size > 1
 	panid = Integer(ARGV[1])
 end
 if ARGV.size > 2
-	dst_addr = Integer(ARGV[2])
+	baud = ARGV[2].to_i
 end
 if ARGV.size > 3
-#   baud = Integer(ARGV[3])
-    baud = ARGV[3].to_i
+	pwr = ARGV[3].to_i
 end
 if ARGV.size > 4
-#   pwr = Integer(ARGV[4])
-    pwr = ARGV[4].to_i
-end
-if ARGV.size > 5
-		mod = Integer(ARGV[5])
+		mod = Integer(ARGV[4])
 end
 
 # open device deriver
@@ -54,24 +48,21 @@ laz.init()
 # Notes: MACH and MACL on can't broadcast.
 #laz.init(module_test = 0x7000) #MACH:0x4000, MACH:0x2000, PHY:0x1000
 
-printf("ch:%d,panid:%x,dst_addr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,dst_addr,baud,pwr,mod)
+printf("ch:%d,panid:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,baud,pwr,mod)
 
 laz.setModulation(mod)
 laz.setDsssSize(16,0)
 laz.setDsssSpreadFactor(64)
 
 
-#print("Input channel number(24- 60: or 0 exit):")
-#ch = STDIN.gets().chomp.to_i
+laz.begin(ch,panid,baud,pwr)
 
-laz.begin(ch,0xabcd,baud,pwr)
-
-print("Execute TX_ON:")
+print("SET TX_ON (enter):")
 STDIN.gets()
 laz.rf_reg_write(0x0b,0x09)
 sleep 0.5
 
-print("Execute modulation:")
+print("SET PN9 modulation (enter):")
 STDIN.gets()
 laz.rf_reg_write(0x76,0x03)
 sleep 0.5
@@ -79,12 +70,11 @@ sleep 0.5
 data = laz.rf_reg_read(0x0b)
 printf("read data: %x\n",data)
 
-print("Execute TRX_OFF:")
+print("SET TRX_OFF (enter):")
 STDIN.gets()
 laz.rf_reg_write(0x0b,0x08)
 laz.close()
 sleep 0.5
 
-# finishing process
 laz.remove()
 

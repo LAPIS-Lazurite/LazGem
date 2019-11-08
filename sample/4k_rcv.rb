@@ -24,7 +24,6 @@ end
 
 
 ch = 24
-addr = 0xffff
 panid = 0xabcd
 baud = 100
 pwr = 20
@@ -37,11 +36,9 @@ if ARGV.size > 1
 	panid = Integer(ARGV[1])
 end
 if ARGV.size > 2
-#   baud = Integer(ARGV[3])
     baud = ARGV[2].to_i
 end
 if ARGV.size > 3
-#   pwr = Integer(ARGV[4])
     pwr = ARGV[3].to_i
 end
 if ARGV.size > 4
@@ -50,8 +47,8 @@ end
 
 printf("ch:%d,panid:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,baud,pwr,mod)
 
-laz.init()
-#laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
+#laz.init()
+laz.init(module_test = 0x3000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
 
 laz.setModulation(mod)
 laz.setDsssSize(16,0)
@@ -70,6 +67,7 @@ print(sprintf("-----------------------------------------------------------------
 # main routine
 while finish_flag == 0 do
 	if laz.available() <= 0
+		sleep 0.01
 		next
 	end
 	rcv = laz.read()

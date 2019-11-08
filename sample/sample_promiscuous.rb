@@ -3,7 +3,8 @@
 # Function:
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
-require 'LazGem'
+require_relative '../lib/LazGem'
+#require 'LazGem'
 
 laz = LazGem::Device.new
 

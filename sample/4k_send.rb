@@ -54,7 +54,7 @@ printf("ch:%d,panid:%x,dstaddr:%x,baud:%d,pwr:%d,mode:%d\n",ch,panid,dst_addr,ba
 # open device deriver
 #laz.init()
 # Notes: MACH and MACL on can't broadcast.
-laz.init(module_test = 0x7000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
+laz.init(module_test = 0x2000) #MACH:0x4000, MACL:0x2000, PHY:0x1000
 
 payload = "LazuriteLazurite"
 #payload = "LAPIS Lazurite RF system"
