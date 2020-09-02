@@ -4,7 +4,7 @@
 #   Lazurite Sub-GHz/Lazurite Pi Gateway Sample program
 #   SerialMonitor.rb
 #require 'LazGem'
-require_relative '../lib/LazGem'
+require 'LazGem'
 
 laz = LazGem::Device.new
 
@@ -26,8 +26,7 @@ if ARGV.size == 0
 end
 
 # open device deriver
-laz.init(0x1000)
-#laz.init()
+laz.init()
 
 dst_short_addr = 0x444a
 ch = 36
@@ -55,8 +54,7 @@ i = 0
 # main routine
 while finish_flag == 0 do
 	begin
-	begin_panid = 0xabcd
-	laz.begin(ch,begin_panid,baud,pwr)
+	laz.begin(ch,panid,baud,pwr)
 	rescue Exception => e
 		p "file io error!! reset driver"
 		laz.remove()
